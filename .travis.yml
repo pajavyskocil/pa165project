@@ -3,5 +3,5 @@ language: java
 jdk:
   - oraclejdk8
 
- notifications:
+notifications:
     slack: pa165-sassmann:rEyXPZz5dbANLLDo7knSuM2y
