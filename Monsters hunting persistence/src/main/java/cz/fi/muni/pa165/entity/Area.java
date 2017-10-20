@@ -1,4 +1,4 @@
 package cz.fi.muni.pa165.entity;
 
-public class Zombie {
+public class Area {
 }
