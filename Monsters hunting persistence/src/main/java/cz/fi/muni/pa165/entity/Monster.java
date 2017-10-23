@@ -13,6 +13,9 @@ import java.util.Set;
 
 import cz.fi.muni.pa165.enums.MonsterAgility;
 
+/**
+ * @author Vojtech Sassmann &lt;vojtech.sassmann@gmail.com&gt;
+ */
 @Entity
 public class Monster {
 
@@ -24,8 +27,11 @@ public class Monster {
 	@Column(nullable = false, unique = true)
 	private String name;
 
-	@ManyToMany()
+	@ManyToMany(mappedBy = "monsters")
 	private Set<Area> areas = new HashSet<>();
+
+	@ManyToMany(mappedBy = "appropriateMonsters")
+	private Set<Weapon> appropriateWeapons = new HashSet<>();
 
 	private Double weight;
 
@@ -42,6 +48,14 @@ public class Monster {
 			throw new IllegalArgumentException("Name can not be empty.");
 		}
 		this.name = name;
+	}
+
+	public Set<Weapon> getAppropriateWeapons() {
+		return appropriateWeapons;
+	}
+
+	public void setAppropriateWeapons(Set<Weapon> appropriateWeapons) {
+		this.appropriateWeapons = appropriateWeapons;
 	}
 
 	public Long getId() {
