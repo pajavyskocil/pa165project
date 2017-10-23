@@ -6,6 +6,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 import cz.fi.muni.pa165.enums.UserRole;
@@ -14,6 +15,7 @@ import cz.fi.muni.pa165.enums.UserRole;
  * @author Balcirak Peter <peter.balcirak@gmail.com>
  */
 @Entity
+@Table(name = "Users")
 public class User {
 
 

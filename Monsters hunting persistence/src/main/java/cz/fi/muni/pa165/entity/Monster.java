@@ -8,6 +8,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.validation.constraints.NotNull;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -27,8 +28,9 @@ public class Monster {
 	@Column(nullable = false, unique = true)
 	private String name;
 
-	@ManyToMany(mappedBy = "monsters")
-	private Set<Area> areas = new HashSet<>();
+//	FIXME: after area entity is implemented remove comments
+//	@ManyToMany(mappedBy = "monsters")
+//	private Set<Area> areas = new HashSet<>();
 
 	@ManyToMany(mappedBy = "appropriateMonsters")
 	private Set<Weapon> appropriateWeapons = new HashSet<>();
@@ -50,11 +52,15 @@ public class Monster {
 	}
 
 	public Set<Weapon> getAppropriateWeapons() {
-		return appropriateWeapons;
+		return Collections.unmodifiableSet(appropriateWeapons);
 	}
 
-	public void setAppropriateWeapons(Set<Weapon> appropriateWeapons) {
-		this.appropriateWeapons = appropriateWeapons;
+	public void addAppropriateWeapon(Weapon weapon) {
+		this.appropriateWeapons.add(weapon);
+	}
+
+	public void removeAppropriateWeapon(Weapon weapon) {
+		this.appropriateWeapons.remove(weapon);
 	}
 
 	public Long getId() {
@@ -75,13 +81,18 @@ public class Monster {
 		this.name = name;
 	}
 
-	public Set<Area> getAreas() {
-		return areas;
-	}
-
-	public void setAreas(Set<Area> areas) {
-		this.areas = areas;
-	}
+//	FIXME
+//	public Set<Area> getAreas() {
+//		return Collections.unmodifiableSet(areas);
+//	}
+//
+//	public void addArea(Area area) {
+//		this.areas.add(area);
+//	}
+//
+//	public void removeArea(Area area) {
+//		this.areas.remove(area);
+//	}
 
 	public Double getWeight() {
 		return weight;
