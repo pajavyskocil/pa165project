@@ -43,7 +43,10 @@ public class Weapon {
         this.name = name;
     }
 
-    public Long getId() {
+	public Weapon() {
+	}
+
+	public Long getId() {
         return id;
     }
 

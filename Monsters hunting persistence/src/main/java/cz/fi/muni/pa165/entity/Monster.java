@@ -46,6 +46,9 @@ public class Monster {
 		this.name = name;
 	}
 
+	public Monster() {
+	}
+
 	public Set<Weapon> getAppropriateWeapons() {
 		return appropriateWeapons;
 	}
