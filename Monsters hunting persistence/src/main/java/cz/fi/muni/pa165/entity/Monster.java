@@ -41,12 +41,8 @@ public class Monster {
 	private MonsterAgility agility;
 
 	public Monster(String name) {
-		if (name == null) {
-			throw new IllegalArgumentException("Name can not be null.");
-		}
-		if (name.isEmpty()) {
-			throw new IllegalArgumentException("Name can not be empty.");
-		}
+		checkName(name);
+
 		this.name = name;
 	}
 
@@ -71,6 +67,8 @@ public class Monster {
 	}
 
 	public void setName(String name) {
+		checkName(name);
+
 		this.name = name;
 	}
 
@@ -124,5 +122,14 @@ public class Monster {
 		result = 31 * result + (getWeight() != null ? getWeight().hashCode() : 0);
 		result = 31 * result + (getHeight() != null ? getHeight().hashCode() : 0);
 		return result;
+	}
+
+	private void checkName(String value) {
+		if (value == null) {
+			throw new IllegalArgumentException("Name can not be null.");
+		}
+		if (value.isEmpty()) {
+			throw new IllegalArgumentException("Name can not be empty.");
+		}
 	}
 }

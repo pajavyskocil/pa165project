@@ -38,12 +38,8 @@ public class Weapon {
     private Integer magazineCapacity;
 
     public Weapon (String name) {
-        if (name == null) {
-            throw new IllegalArgumentException("Name can not be null.");
-        }
-        if (name.isEmpty()) {
-            throw new IllegalArgumentException("Name can not be empty.");
-        }
+        checkName(name);
+
         this.name = name;
     }
 
@@ -60,6 +56,8 @@ public class Weapon {
     }
 
     public void setName(String name) {
+		checkName(name);
+
         this.name = name;
     }
 
@@ -117,4 +115,13 @@ public class Weapon {
         result = 31 * result + (getMagazineCapacity() != null ? getMagazineCapacity().hashCode() : 0);
         return result;
     }
+
+    private void checkName(String value) {
+		if (value == null) {
+			throw new IllegalArgumentException("Name can not be null.");
+		}
+		if (value.isEmpty()) {
+			throw new IllegalArgumentException("Name can not be empty.");
+		}
+	}
 }
