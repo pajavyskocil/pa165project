@@ -28,9 +28,8 @@ public class Monster {
 	@Column(nullable = false, unique = true)
 	private String name;
 
-//	FIXME: after area entity is implemented remove comments
-//	@ManyToMany(mappedBy = "monsters")
-//	private Set<Area> areas = new HashSet<>();
+	@ManyToMany(mappedBy = "monsters")
+	private Set<Area> areas = new HashSet<>();
 
 	@ManyToMany(mappedBy = "appropriateMonsters")
 	private Set<Weapon> appropriateWeapons = new HashSet<>();
@@ -81,18 +80,17 @@ public class Monster {
 		this.name = name;
 	}
 
-//	FIXME
-//	public Set<Area> getAreas() {
-//		return Collections.unmodifiableSet(areas);
-//	}
-//
-//	public void addArea(Area area) {
-//		this.areas.add(area);
-//	}
-//
-//	public void removeArea(Area area) {
-//		this.areas.remove(area);
-//	}
+	public Set<Area> getAreas() {
+		return Collections.unmodifiableSet(areas);
+	}
+
+	public void addArea(Area area) {
+		this.areas.add(area);
+	}
+
+	public void removeArea(Area area) {
+		this.areas.remove(area);
+	}
 
 	public Double getWeight() {
 		return weight;
