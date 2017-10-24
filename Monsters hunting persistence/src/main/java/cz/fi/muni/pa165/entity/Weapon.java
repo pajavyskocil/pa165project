@@ -8,13 +8,14 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.validation.constraints.NotNull;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
 import cz.fi.muni.pa165.enums.WeaponType;
 
 /**
- *   @author Pavel Vyskocil <vyskocilpavel@muni.cz>
+ * @author Pavel Vyskocil <vyskocilpavel@muni.cz>
  */
 @Entity
 public class Weapon {
@@ -24,29 +25,29 @@ public class Weapon {
     private Long id;
 
     @NotNull
-    @Column(nullable=false, unique=true)
+    @Column(nullable = false, unique = true)
     private String name;
 
     @Enumerated
     private WeaponType type;
 
-    @ManyToMany()
+    @ManyToMany(mappedBy = "appropriateWeapons")
     private Set<Monster> appropriateMonsters = new HashSet<>();
 
     private Integer range;
 
     private Integer magazineCapacity;
 
-    public Weapon (String name) {
+    public Weapon(String name) {
         checkName(name);
 
         this.name = name;
     }
 
-	public Weapon() {
-	}
+    public Weapon() {
+    }
 
-	public Long getId() {
+    public Long getId() {
         return id;
     }
 
@@ -59,7 +60,7 @@ public class Weapon {
     }
 
     public void setName(String name) {
-		checkName(name);
+        checkName(name);
 
         this.name = name;
     }
@@ -73,11 +74,17 @@ public class Weapon {
     }
 
     public Set<Monster> getAppropriateMonsters() {
-        return appropriateMonsters;
+        return Collections.unmodifiableSet(appropriateMonsters);
     }
 
-    public void setAppropriateMonsters(Set<Monster> appropriateMonsters) {
-        this.appropriateMonsters = appropriateMonsters;
+    public void addAppropriateMonster(Monster monster) {
+        this.appropriateMonsters.add(monster);
+        monster.addAppropriateWeapon(this);
+    }
+
+    public void removeAppropriateMonster(Monster monster) {
+        this.appropriateMonsters.remove(monster);
+        monster.removeAppropriateWeapon(this);
     }
 
     public Integer getRange() {
@@ -107,7 +114,7 @@ public class Weapon {
         if (!getName().equals(weapon.getName())) return false;
         if (getType() != weapon.getType()) return false;
         if (getRange() != null ? !getRange().equals(weapon.getRange()) : weapon.getRange() != null) return false;
-        return getMagazineCapacity() != null ? getMagazineCapacity().equals(weapon.getMagazineCapacity()) : weapon.getMagazineCapacity()== null;
+        return getMagazineCapacity() != null ? getMagazineCapacity().equals(weapon.getMagazineCapacity()) : weapon.getMagazineCapacity() == null;
     }
 
     @Override
@@ -121,7 +128,7 @@ public class Weapon {
 
     private void checkName(String value) {
 		if (value == null) {
-			throw new IllegalArgumentException("Name can not be null.");
+            throw new IllegalArgumentException("Name can not be null.");
 		}
 		if (value.isEmpty()) {
 			throw new IllegalArgumentException("Name can not be empty.");
