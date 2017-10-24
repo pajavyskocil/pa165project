@@ -12,6 +12,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import cz.fi.muni.pa165.enums.AreaType;
+import java.util.Collections;
 
 /**
  *   @author Jan Gol <gol.honza@gmail.com>
@@ -67,13 +68,19 @@ public class Area {
                 this.type = type;
         }
         
-        public Set<Monster> getAreas() {
-                return monsters;
+        public Set<Monster> getMonsters() {
+                return Collections.unmodifiableSet(monsters);
         }
         
-        public void setAreas(Set<Monster> monsters) {
-                this.monsters = monsters;
-    }
+        public void addMonster(Monster monster) {
+                this.monsters.add(monster);
+                monster.addArea(this);
+        }
+        
+        public void removeMonster(Monster monster) {
+                this.monsters.remove(monster);
+                monster.removeArea(this);
+        }
         
         @Override
 	public boolean equals(Object obj) {

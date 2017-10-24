@@ -28,7 +28,6 @@ public class Monster {
 	@Column(nullable = false, unique = true)
 	private String name;
 
-//	FIXME: after area entity is implemented remove comments
 	@ManyToMany(mappedBy = "monsters")
 	private Set<Area> areas = new HashSet<>();
 
@@ -81,7 +80,6 @@ public class Monster {
 		this.name = name;
 	}
 
-//	FIXME
 	public Set<Area> getAreas() {
 		return Collections.unmodifiableSet(areas);
 	}
