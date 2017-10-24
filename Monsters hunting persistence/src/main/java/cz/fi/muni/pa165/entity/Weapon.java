@@ -31,7 +31,7 @@ public class Weapon {
     @Enumerated
     private WeaponType type;
 
-    @ManyToMany(mappedBy = "appropriateWeapons")
+    @ManyToMany()
     private Set<Monster> appropriateMonsters = new HashSet<>();
 
     private Integer range;
