@@ -1,26 +1,30 @@
 package cz.fi.muni.pa165.dao;
 
 import cz.fi.muni.pa165.entity.User;
-import org.springframework.stereotype.Repository;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
+import javax.inject.Named;
 import java.util.List;
 
-@Repository
+@Named
 public class UserDaoImpl implements UserDao {
-
-	@PersistenceContext
-	private EntityManager em;
-
 	@Override
 	public void create(User user) {
-		em.persist(user);
+		throw new NotImplementedException();
+	}
+
+	@Override
+	public void delete(User user) {
+		throw new NotImplementedException();
+	}
+
+	@Override
+	public User findById(Long id) {
+		throw new NotImplementedException();
 	}
 
 	@Override
 	public List<User> getAll() {
-		return em.createQuery("select u from User u", User.class)
-					   .getResultList();
+		throw new NotImplementedException();
 	}
 }
