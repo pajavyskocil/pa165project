@@ -22,6 +22,11 @@ public class UserDaoImpl implements UserDao {
 	public User findById(Long id) {
 		throw new NotImplementedException();
 	}
+	
+	@Override
+	public User findByEmail(String email) {
+		throw new NotImplementedException();
+	}
 
 	@Override
 	public List<User> getAll() {
