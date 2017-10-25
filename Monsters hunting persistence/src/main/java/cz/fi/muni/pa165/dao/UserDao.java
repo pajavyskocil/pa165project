@@ -8,5 +8,6 @@ public interface UserDao {
 	void create(User user);
 	void delete(User user);
 	User findById(Long id);
+	User findByEmail(String email);
 	List<User> getAll();
 }
