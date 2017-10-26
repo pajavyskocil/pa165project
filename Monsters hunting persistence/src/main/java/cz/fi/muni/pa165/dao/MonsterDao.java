@@ -9,6 +9,7 @@ public interface MonsterDao {
 	void create(Monster monster);
 	void delete(Monster monster);
 	Monster findById(Long id);
+	Monster findByName(String name);
 	List<Monster> getAllForAgility(MonsterAgility monsterAgility);
 	List<Monster> getAll();
 }

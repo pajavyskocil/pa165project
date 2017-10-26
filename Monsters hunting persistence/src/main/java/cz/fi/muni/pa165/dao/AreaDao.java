@@ -9,6 +9,7 @@ public interface AreaDao {
 	void create(Area area);
 	void delete(Area area);
 	Area findById(Long id);
+	Area findByName(String name);
 	List<Area> getAllForType(AreaType areaType);
 	List<Area> getAll();
 }
