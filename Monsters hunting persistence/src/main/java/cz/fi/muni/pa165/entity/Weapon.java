@@ -112,7 +112,7 @@ public class Weapon {
         Weapon weapon = (Weapon) o;
 
         if (!getName().equals(weapon.getName())) return false;
-        if (getType() != weapon.getType()) return false;
+        if (getType() != null ? !getType().equals(weapon.getType()) : weapon.getType() != null) return false;
         if (getRange() != null ? !getRange().equals(weapon.getRange()) : weapon.getRange() != null) return false;
         return getMagazineCapacity() != null ? getMagazineCapacity().equals(weapon.getMagazineCapacity()) : weapon.getMagazineCapacity() == null;
     }
@@ -120,7 +120,7 @@ public class Weapon {
     @Override
     public int hashCode() {
         int result = getName().hashCode();
-        result = 31 * result + getType().hashCode();
+        result = 31 * result + (getType() != null ? getType().hashCode(): 0);
         result = 31 * result + (getRange() != null ? getRange().hashCode() : 0);
         result = 31 * result + (getMagazineCapacity() != null ? getMagazineCapacity().hashCode() : 0);
         return result;
