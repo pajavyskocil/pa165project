@@ -5,50 +5,59 @@ import cz.fi.muni.pa165.enums.WeaponType;
 
 import java.util.List;
 
+/**
+ * Interface of WeaponDao
+ * @author Pavel Vyskocil <vyskocilpavel@muni.cz>
+ */
 public interface WeaponDao {
 
 	/**
+	 * Saves the given weapon entity to the DB
+	 * @param weapon weapon which will be saved
 	 *
-	 * @param weapon Weapon for create.
+	 * @throws IllegalArgumentException when given parameter is null
 	 */
 	void create(Weapon weapon);
 
 	/**
+	 * Removes the given weapon entity from the DB
+	 * @param weapon weapon which will be removed
 	 *
-	 * @param weapon Weapon for delete.
+	 * @throws IllegalArgumentException when given parameter is null
 	 */
 	void delete(Weapon weapon);
 
 	/**
+	 * Finds weapon entity by id
+	 * @param id id by which will be weapon find
+	 * @return weapon or null if there is not weapon with that id
 	 *
-	 * @param weapon Weapon for update.
+	 * @throws IllegalArgumentException when given parameter is null or is negative
 	 */
-	void update(Weapon weapon);
+	Weapon findById(Long id);
 
 	/**
-	 * This method return Weapon by Id.
-	 * @param id Id of Weapon
-	 * @return Weapon
+	 * Finds weapon entity by name
+	 * @param name name by which will be weapon find
+	 * @return weapon or null if there is not weapon with that name
+	 *
+	 * @throws IllegalArgumentException when given parameter is null or empty
 	 */
-	Weapon getById(Long id);
+	Weapon findByName(String name);
 
 	/**
-	 * This method return Weapon by Name
-	 * @param name Name of Weapon
-	 * @return Weapon
-	 */
-	Weapon getByName(String name);
-
-	/**
-	 * This methot return List of all Weapons
-	 * @return List of Weapons.
+	 * Gets all weapon entities in DB
+	 * @return List of weapons
+	 *
 	 */
 	List<Weapon> getAll();
 
 	/**
-	 * This method return List of all Weapons for WeaponType
-	 * @param type WeaponType
-	 * @return List of Weapons
+	 * Gets all weapon entities with the given type
+	 * @param type type by which be return list oe weapons
+	 * @return List of weapons with the given type
+	 *
+	 * @throws IllegalArgumentException when given parameter is null, or if the parameter is other than enum permit
 	 */
 	List<Weapon> getAllForType(WeaponType type);
 
