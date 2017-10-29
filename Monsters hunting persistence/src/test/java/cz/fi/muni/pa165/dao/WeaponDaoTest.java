@@ -62,13 +62,19 @@ public class WeaponDaoTest extends AbstractTestNGSpringContextTests {
 	}
 
 	@Test
-	public void testGetByIdWithNull() {
+	public void testFindByIdWithNull() {
 		assertThatExceptionOfType(IllegalArgumentException.class)
-				.isThrownBy(() -> weaponDao.delete(null));
+				.isThrownBy(() -> weaponDao.findById(null));
 	}
 
 	@Test
-	public void testGetById() {
+	public void testFindByIdNegativeId() {
+		assertThatExceptionOfType(IllegalArgumentException.class)
+				.isThrownBy(() -> weaponDao.findById(-1L));
+	}
+
+	@Test
+	public void testFindById() {
 		Weapon rifle = createRifle();
 
 		Weapon foundWeapon = weaponDao.findById(rifle.getId());
@@ -77,25 +83,25 @@ public class WeaponDaoTest extends AbstractTestNGSpringContextTests {
 	}
 
 	@Test
-	public void testGetByIdNothingFound() {
+	public void testFindByIdNothingFound() {
 		Weapon foundWeapon = weaponDao.findById(1L);
 		assertThat(foundWeapon).isEqualTo(null);
 	}
 
 	@Test
-	public void testGetByNameWithNull() {
+	public void testFindByNameWithNull() {
 		assertThatExceptionOfType(IllegalArgumentException.class)
 				.isThrownBy(() -> weaponDao.findByName(null));
 	}
 
 	@Test
-	public void testGetByNameWithEmptyValue() {
+	public void testFindByNameWithEmptyValue() {
 		assertThatExceptionOfType(IllegalArgumentException.class)
 				.isThrownBy(() -> weaponDao.findByName(""));
 	}
 
 	@Test
-	public void testGetByName() {
+	public void testFindByName() {
 		Weapon rifle = createRifle();
 
 		Weapon foundWeapon = weaponDao.findByName(rifle.getName());
@@ -104,7 +110,7 @@ public class WeaponDaoTest extends AbstractTestNGSpringContextTests {
 	}
 
 	@Test
-	public void testGetByNameNothingFound() {
+	public void testFindByNameNothingFound() {
 		Weapon foundWeapon = weaponDao.findByName("Rifle");
 		assertThat(foundWeapon).isEqualTo(null);
 	}
