@@ -158,7 +158,7 @@ public class WeaponDaoTest extends AbstractTestNGSpringContextTests {
 	}
 
 	@Test
-	public void testManyToManyRelationWithMonster() {
+	public void testManyToManyRelationWithMonsterAdd() {
 		Weapon rifle = createRifle();
 		Monster zombie = new Monster("Zombie");
 
@@ -169,6 +169,22 @@ public class WeaponDaoTest extends AbstractTestNGSpringContextTests {
 		Set<Weapon> weaponsForZombie = zombie.getAppropriateWeapons();
 
 		assertThat(weaponsForZombie).contains(rifle);
+	}
+
+	@Test
+	public void testManyToManyRelationWithMonsterRemove() {
+		Weapon rifle = createRifle();
+		Monster zombie = new Monster("Zombie");
+
+		rifle.addAppropriateMonster(zombie);
+
+		monsterDao.create(zombie);
+
+		rifle.removeAppropriateMonster(zombie);
+
+		Set<Weapon> weaponsForZombie = zombie.getAppropriateWeapons();
+
+		assertThat(weaponsForZombie).doesNotContain(rifle);
 	}
 
 	private Weapon createRifle() {
