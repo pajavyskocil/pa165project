@@ -59,6 +59,6 @@
     </build>
 
     <modules>
-        <module>Monsters hunting persistence</module>
+        <module>creatures-hunting-persistence</module>
     </modules>
 </project>
