@@ -14,8 +14,6 @@ public class MonsterDTO {
 
 	private Long id;
 	private String name;
-	private List<AreaDTO> areas = new ArrayList<>();
-	private List<WeaponDTO> appropriateWeapons = new ArrayList<>();
 	private Double height;
 	private Double weight;
 	private MonsterAgility agility;
@@ -34,22 +32,6 @@ public class MonsterDTO {
 
 	public void setName(String name) {
 		this.name = name;
-	}
-
-	public List<AreaDTO> getAreas() {
-		return areas;
-	}
-
-	public void setAreas(List<AreaDTO> areas) {
-		this.areas = areas;
-	}
-
-	public List<WeaponDTO> getAppropriateWeapons() {
-		return appropriateWeapons;
-	}
-
-	public void setAppropriateWeapons(List<WeaponDTO> appropriateWeapons) {
-		this.appropriateWeapons = appropriateWeapons;
 	}
 
 	public Double getHeight() {
@@ -83,10 +65,8 @@ public class MonsterDTO {
 
 		MonsterDTO that = (MonsterDTO) o;
 
+		if (id != null ? !id.equals(that.id) : that.id != null) return false;
 		if (name != null ? !name.equals(that.name) : that.name != null) return false;
-		if (areas != null ? !areas.equals(that.areas) : that.areas != null) return false;
-		if (appropriateWeapons != null ? !appropriateWeapons.equals(that.appropriateWeapons) : that.appropriateWeapons != null)
-			return false;
 		if (height != null ? !height.equals(that.height) : that.height != null) return false;
 		if (weight != null ? !weight.equals(that.weight) : that.weight != null) return false;
 		return agility == that.agility;
@@ -94,9 +74,8 @@ public class MonsterDTO {
 
 	@Override
 	public int hashCode() {
-		int result = name != null ? name.hashCode() : 0;
-		result = 31 * result + (areas != null ? areas.hashCode() : 0);
-		result = 31 * result + (appropriateWeapons != null ? appropriateWeapons.hashCode() : 0);
+		int result = id != null ? id.hashCode() : 0;
+		result = 31 * result + (name != null ? name.hashCode() : 0);
 		result = 31 * result + (height != null ? height.hashCode() : 0);
 		result = 31 * result + (weight != null ? weight.hashCode() : 0);
 		result = 31 * result + (agility != null ? agility.hashCode() : 0);
@@ -108,8 +87,6 @@ public class MonsterDTO {
 		return "MonsterDTO{" +
 				"id=" + id +
 				", name='" + name + '\'' +
-				", areas=" + areas +
-				", appropriateWeapons=" + appropriateWeapons +
 				", height=" + height +
 				", weight=" + weight +
 				", agility=" + agility +

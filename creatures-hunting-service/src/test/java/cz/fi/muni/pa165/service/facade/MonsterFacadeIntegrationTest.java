@@ -41,12 +41,12 @@ public class MonsterFacadeIntegrationTest extends AbstractTestNGSpringContextTes
 	@Test
 	public void testCreateMonster() {
 		MonsterCreateDTO monsterCreateDTO = prepareMonsterCreateDTO();
-		MonsterDTO monsterDTO = prepareMonsterDTO();
 
 		Long newId = monsterFacade.createMonster(monsterCreateDTO);
+		MonsterDTO monsterDTO = prepareMonsterDTO();
+		monsterDTO.setId(newId);
 
 		List<MonsterDTO> monsters = monsterFacade.getAllMonsters();
 		assertThat(monsters).contains(monsterDTO);
-		assertThat(monsters.get(monsters.indexOf(monsterDTO)).getId()).isEqualTo(newId);
 	}
 }
