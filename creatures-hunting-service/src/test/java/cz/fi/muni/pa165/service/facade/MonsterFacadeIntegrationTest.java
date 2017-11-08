@@ -22,7 +22,7 @@ public class MonsterFacadeIntegrationTest extends AbstractTestNGSpringContextTes
 
 	private MonsterCreateDTO prepareMonsterCreateDTO() {
 		MonsterCreateDTO monsterDTO = new MonsterCreateDTO();
-		monsterDTO.setName("sdfsdf");
+		monsterDTO.setName("Zombie");
 		monsterDTO.setHeight(54.0);
 		monsterDTO.setWeight(625.1);
 		monsterDTO.setAgility(MonsterAgility.FAST);
@@ -31,7 +31,7 @@ public class MonsterFacadeIntegrationTest extends AbstractTestNGSpringContextTes
 
 	private MonsterDTO prepareMonsterDTO() {
 		MonsterDTO monsterDTO = new MonsterDTO();
-		monsterDTO.setName("sdfsdf");
+		monsterDTO.setName("Zombie");
 		monsterDTO.setHeight(54.0);
 		monsterDTO.setWeight(625.1);
 		monsterDTO.setAgility(MonsterAgility.FAST);

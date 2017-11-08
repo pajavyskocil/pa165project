@@ -14,4 +14,6 @@ public interface MonsterService {
 	List<Monster> getAllMonsters();
 
 	void createMonster(Monster monster);
+
+	List<Monster> getTheMostWidespreadMonsters();
 }
