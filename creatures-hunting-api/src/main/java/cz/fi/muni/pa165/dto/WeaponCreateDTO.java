@@ -6,25 +6,16 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * DTO class for Weapon entity
+ * WeaponCreateDTO class
  * @author Pavel Vyskocil <vyskocilpavel@muni.cz>
  */
-public class WeaponDTO {
+public class WeaponCreateDTO {
 
-    private Long id;
     private String name;
     private WeaponType type;
     private Set<MonsterDTO> appropriateMonsters = new HashSet<>();
     private Integer range;
     private Integer magazineCapacity;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public String getName() {
         return name;
@@ -77,35 +68,32 @@ public class WeaponDTO {
 
         WeaponDTO weaponDTO = (WeaponDTO) o;
 
-        if (id != null ? !id.equals(weaponDTO.id) : weaponDTO.id != null) return false;
-        if (name != null ? !name.equals(weaponDTO.name) : weaponDTO.name != null) return false;
-        if (type != weaponDTO.type) return false;
-        if (appropriateMonsters != null ? !appropriateMonsters.equals(weaponDTO.appropriateMonsters) : weaponDTO.appropriateMonsters != null)
+        if (getName() != null ? !getName().equals(weaponDTO.getName()) : weaponDTO.getName() != null) return false;
+        if (getType() != weaponDTO.getType()) return false;
+        if (getAppropriateMonsters() != null ? !getAppropriateMonsters().equals(weaponDTO.getAppropriateMonsters()) : weaponDTO.getAppropriateMonsters()!= null)
             return false;
-        if (range != null ? !range.equals(weaponDTO.range) : weaponDTO.range != null) return false;
-        return magazineCapacity != null ? magazineCapacity.equals(weaponDTO.magazineCapacity) : weaponDTO.magazineCapacity == null;
+        if (getRange() != null ? !getRange().equals(weaponDTO.getRange()) : weaponDTO.getRange() != null) return false;
+        return getMagazineCapacity() != null ? getMagazineCapacity().equals(weaponDTO.getMagazineCapacity()) : weaponDTO.getMagazineCapacity()== null;
     }
 
     @Override
     public int hashCode() {
-        int result = id != null ? id.hashCode() : 0;
-        result = 31 * result + (name != null ? name.hashCode() : 0);
-        result = 31 * result + (type != null ? type.hashCode() : 0);
-        result = 31 * result + (appropriateMonsters != null ? appropriateMonsters.hashCode() : 0);
-        result = 31 * result + (range != null ? range.hashCode() : 0);
-        result = 31 * result + (magazineCapacity != null ? magazineCapacity.hashCode() : 0);
+        int result = getName() != null ? getName().hashCode() : 0;
+        result = 31 * result + (getType() != null ? getType().hashCode() : 0);
+        result = 31 * result + (getAppropriateMonsters() != null ? getAppropriateMonsters().hashCode() : 0);
+        result = 31 * result + (getRange() != null ? getRange().hashCode() : 0);
+        result = 31 * result + (getMagazineCapacity()!= null ? getMagazineCapacity().hashCode() : 0);
         return result;
     }
 
     @Override
     public String toString() {
         return "WeaponDTO{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", type=" + type +
-                ", appropriateMonsters=" + appropriateMonsters +
-                ", range=" + range +
-                ", magazineCapacity=" + magazineCapacity +
+                ", name='" + getName() + '\'' +
+                ", type=" + getType() +
+                ", appropriateMonsters=" + getAppropriateMonsters()+
+                ", range=" + getRange() +
+                ", magazineCapacity=" + getMagazineCapacity()+
                 '}';
     }
 }
