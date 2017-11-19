@@ -2,6 +2,7 @@ package cz.fi.muni.pa165.service;
 
 import cz.fi.muni.pa165.dao.MonsterDao;
 import cz.fi.muni.pa165.entity.Monster;
+import cz.fi.muni.pa165.enums.MonsterAgility;
 import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
@@ -41,5 +42,25 @@ public class MonsterServiceImpl implements MonsterService {
 		return allMonsters.stream()
 				.filter(monster -> monster.getAreas().size() == finalMaximumOccurrence)
 				.collect(Collectors.toList());
+	}
+
+	@Override
+	public void deleteMonster(Monster monster) {
+		monsterDao.delete(monster);
+	}
+
+	@Override
+	public Monster findById(Long id) {
+		return monsterDao.findById(id);
+	}
+
+	@Override
+	public Monster findByName(String name) {
+		return monsterDao.findByName(name);
+	}
+
+	@Override
+	public List<Monster> getAllForAgility(MonsterAgility agility) {
+		return monsterDao.getAllForAgility(agility);
 	}
 }
