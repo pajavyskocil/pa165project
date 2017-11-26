@@ -2,6 +2,9 @@ package cz.fi.muni.pa165.dto;
 
 import cz.fi.muni.pa165.enums.MonsterAgility;
 
+/**
+ * @author Vojtech Sassmann <vojtech.sassmann@gmail.com>
+ */
 public class MonsterChangeAgilityDTO {
 
 	private Long monsterId;
