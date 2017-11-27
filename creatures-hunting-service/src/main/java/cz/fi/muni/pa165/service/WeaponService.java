@@ -62,18 +62,18 @@ public interface WeaponService {
     /**
      * Add appropriate monster entity to weapon
      *
-     * @param weaponId Id of weapon
-     * @param monsterId Id of monster
+     * @param weapon Weapon
+     * @param monster Monster
      */
-    void addAppropriateMonster(Long weaponId, Long monsterId);
+    void addAppropriateMonster(Weapon weapon, Monster monster);
 
     /**
      * Remove appropriate monster entity for weapon
      *
-     * @param weaponId Id of weapon
-     * @param monsterId Id of monster
+     * @param weapon Weapon
+     * @param monster Monster
      */
-    void removeAppropriateMonster(Long weaponId, Long monsterId);
+    void removeAppropriateMonster(Weapon weapon, Monster monster);
 
     /**
      * Gets the most effective weapon

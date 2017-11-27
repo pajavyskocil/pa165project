@@ -61,7 +61,7 @@ public class WeaponFacadeUnitTest{
 
     @BeforeMethod
     public void setFacade(){
-        weaponFacade = new WeaponFacadeImpl(weaponService, beanMappingService);
+        weaponFacade = new WeaponFacadeImpl(weaponService, monsterService, beanMappingService);
     }
 
     @BeforeMethod
@@ -204,7 +204,7 @@ public class WeaponFacadeUnitTest{
 
         weaponFacade.addAppropriateMonster(id, id);
 
-        verify(weaponService, times(1)).addAppropriateMonster(id, id);
+        verify(weaponService, times(1)).addAppropriateMonster(pistol, zombie);
     }
 
     @Test
@@ -217,7 +217,7 @@ public class WeaponFacadeUnitTest{
 
         weaponFacade.removeAppropriateMonster(weaponId, monsterId);
 
-        verify(weaponService, times(1)).removeAppropriateMonster(weaponId, monsterId);
+        verify(weaponService, times(1)).removeAppropriateMonster(rifle, zombie);
     }
 
     @Test

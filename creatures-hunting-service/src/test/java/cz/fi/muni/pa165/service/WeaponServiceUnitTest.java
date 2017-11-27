@@ -122,10 +122,7 @@ public class WeaponServiceUnitTest {
 
     @Test
     public void testAddAppropriateMonster(){
-        when(weaponDao.findById(pistol.getId())).thenReturn(pistol);
-        when(monsterDao.findById(zombie.getId())).thenReturn(zombie);
-
-        weaponService.addAppropriateMonster(pistol.getId(), zombie.getId());
+        weaponService.addAppropriateMonster(pistol, zombie);
 
         assertThat(pistol.getAppropriateMonsters()).containsOnly(spider, zombie);
 
@@ -133,12 +130,9 @@ public class WeaponServiceUnitTest {
 
     @Test
     public void testRemoveAppropriateMonster(){
-        when(weaponDao.findById(pistol.getId())).thenReturn(pistol);
-        when(monsterDao.findById(spider.getId())).thenReturn(spider);
-
         assertThat(pistol.getAppropriateMonsters()).containsOnly(spider);
 
-        weaponService.removeAppropriateMonster(pistol.getId(), spider.getId());
+        weaponService.removeAppropriateMonster(pistol, spider);
 
         assertThat(pistol.getAppropriateMonsters()).doesNotContain(spider);
     }

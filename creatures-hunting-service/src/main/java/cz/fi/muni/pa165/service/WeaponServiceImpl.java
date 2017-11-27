@@ -60,16 +60,18 @@ public class WeaponServiceImpl implements WeaponService{
     }
 
     @Override
-    public void addAppropriateMonster(Long weaponId, Long monsterId) {
-        Weapon weapon = weaponDao.findById(weaponId);
-        Monster monster = monsterDao.findById(monsterId);
+    public void addAppropriateMonster(Weapon weapon, Monster monster) {
+        if (weapon.getAppropriateMonsters().contains(monster)){
+            throw new IllegalArgumentException("Monster is already assign as appropriate monster for weapon!");
+        }
         weapon.addAppropriateMonster(monster);
     }
 
     @Override
-    public void removeAppropriateMonster(Long weaponId, Long monsterId) {
-        Weapon weapon = weaponDao.findById(weaponId);
-        Monster monster = monsterDao.findById(monsterId);
+    public void removeAppropriateMonster(Weapon weapon, Monster monster) {
+        if (!weapon.getAppropriateMonsters().contains(monster)){
+            throw new IllegalArgumentException("Monster is not assign as appropriate monster for weapon!");
+        }
         weapon.removeAppropriateMonster(monster);
     }
 

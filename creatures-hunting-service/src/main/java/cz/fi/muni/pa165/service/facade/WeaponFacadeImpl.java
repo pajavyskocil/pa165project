@@ -2,10 +2,12 @@ package cz.fi.muni.pa165.service.facade;
 
 import cz.fi.muni.pa165.dto.WeaponCreateDTO;
 import cz.fi.muni.pa165.dto.WeaponDTO;
+import cz.fi.muni.pa165.entity.Monster;
 import cz.fi.muni.pa165.entity.Weapon;
 import cz.fi.muni.pa165.enums.WeaponType;
 import cz.fi.muni.pa165.facade.WeaponFacade;
 import cz.fi.muni.pa165.service.BeanMappingService;
+import cz.fi.muni.pa165.service.MonsterService;
 import cz.fi.muni.pa165.service.WeaponService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,11 +26,14 @@ public class WeaponFacadeImpl implements WeaponFacade{
 
     private final WeaponService weaponService;
 
+    private final MonsterService monsterService;
+
     private final BeanMappingService beanMappingService;
 
     @Inject
-    public WeaponFacadeImpl(WeaponService weaponService, BeanMappingService beanMappingService){
+    public WeaponFacadeImpl(WeaponService weaponService, MonsterService monsterService, BeanMappingService beanMappingService){
         this.weaponService = weaponService;
+        this.monsterService = monsterService;
         this.beanMappingService = beanMappingService;
     }
 
@@ -66,12 +71,12 @@ public class WeaponFacadeImpl implements WeaponFacade{
 
     @Override
     public void addAppropriateMonster(Long weaponId, Long monsterId) {
-        weaponService.addAppropriateMonster(weaponId, monsterId);
+        weaponService.addAppropriateMonster(weaponService.findById(weaponId), monsterService.findById(monsterId));
     }
 
     @Override
     public void removeAppropriateMonster(Long weaponId, Long monsterId) {
-        weaponService.removeAppropriateMonster(weaponId, monsterId);
+        weaponService.removeAppropriateMonster(weaponService.findById(weaponId), monsterService.findById(monsterId));
     }
 
     @Override
