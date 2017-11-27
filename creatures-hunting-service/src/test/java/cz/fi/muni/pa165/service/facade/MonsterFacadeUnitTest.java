@@ -148,4 +148,14 @@ public class MonsterFacadeUnitTest {
 
 		assertThat(foundMonster).isEqualToComparingFieldByField(zombieDTO);
 	}
+
+	@Test
+	public void testGetTheMostWidespreadMonsters() {
+		when(monsterService.getTheMostWidespreadMonsters()).thenReturn(Arrays.asList(chicken, zombie));
+		when(beanMappingService.mapTo(any(), eq(MonsterDTO.class))).thenReturn(Arrays.asList(chickenDTO, zombieDTO));
+
+		List<MonsterDTO> monsters = monsterFacade.getTheMostWidespreadMonsters();
+
+		assertThat(monsters).containsOnly(chickenDTO, zombieDTO);
+	}
 }

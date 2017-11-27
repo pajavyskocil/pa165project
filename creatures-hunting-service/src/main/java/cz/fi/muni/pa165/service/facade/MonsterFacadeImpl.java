@@ -65,4 +65,9 @@ public class MonsterFacadeImpl implements MonsterFacade {
 	public MonsterDTO findByName(String name) {
 		return beanMappingService.mapTo(monsterService.findByName(name), MonsterDTO.class);
 	}
+
+	@Override
+	public List<MonsterDTO> getTheMostWidespreadMonsters() {
+		return beanMappingService.mapTo(monsterService.getTheMostWidespreadMonsters(), MonsterDTO.class);
+	}
 }
