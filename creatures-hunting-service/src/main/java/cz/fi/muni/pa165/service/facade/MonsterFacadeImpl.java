@@ -3,6 +3,7 @@ package cz.fi.muni.pa165.service.facade;
 import cz.fi.muni.pa165.dto.MonsterChangeAgilityDTO;
 import cz.fi.muni.pa165.dto.MonsterCreateDTO;
 import cz.fi.muni.pa165.dto.MonsterDTO;
+import cz.fi.muni.pa165.dto.MonsterUpdateDTO;
 import cz.fi.muni.pa165.entity.Monster;
 import cz.fi.muni.pa165.enums.MonsterAgility;
 import cz.fi.muni.pa165.facade.MonsterFacade;
@@ -48,7 +49,23 @@ public class MonsterFacadeImpl implements MonsterFacade {
 	@Override
 	public void changeMonsterAgility(MonsterChangeAgilityDTO change) {
 		Monster monster = monsterService.findById(change.getMonsterId());
-		monster.setAgility(change.getMonsterAgility());
+		monster.setAgility(change.getAgility());
+	}
+
+	@Override
+	public MonsterDTO updateMonster(MonsterUpdateDTO update) {
+		Monster monster = monsterService.findById(update.getId());
+
+		if (monster == null) {
+			return null;
+		}
+
+		monster.setName(update.getName());
+		monster.setAgility(update.getAgility());
+		monster.setHeight(update.getHeight());
+		monster.setWeight(update.getWeight());
+
+		return beanMappingService.mapTo(monster, MonsterDTO.class);
 	}
 
 	@Override

@@ -3,6 +3,7 @@ package cz.fi.muni.pa165.facade;
 import cz.fi.muni.pa165.dto.MonsterChangeAgilityDTO;
 import cz.fi.muni.pa165.dto.MonsterCreateDTO;
 import cz.fi.muni.pa165.dto.MonsterDTO;
+import cz.fi.muni.pa165.dto.MonsterUpdateDTO;
 import cz.fi.muni.pa165.enums.MonsterAgility;
 
 import java.util.List;
@@ -41,6 +42,12 @@ public interface MonsterFacade {
 	 * @param change change that will be performed.
 	 */
 	void changeMonsterAgility(MonsterChangeAgilityDTO change);
+
+	/**
+	 * Finds monster with the same Id and changes its values
+	 * by the given monster
+	 */
+	MonsterDTO updateMonster(MonsterUpdateDTO update);
 
 	/**
 	 * Returns a List of Monsters with given MonsterAgility.

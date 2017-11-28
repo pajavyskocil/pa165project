@@ -3,12 +3,14 @@ package cz.fi.muni.pa165.service.facade;
 import cz.fi.muni.pa165.dto.MonsterChangeAgilityDTO;
 import cz.fi.muni.pa165.dto.MonsterCreateDTO;
 import cz.fi.muni.pa165.dto.MonsterDTO;
+import cz.fi.muni.pa165.dto.MonsterUpdateDTO;
 import cz.fi.muni.pa165.entity.Monster;
 import cz.fi.muni.pa165.enums.MonsterAgility;
 import cz.fi.muni.pa165.facade.MonsterFacade;
 import cz.fi.muni.pa165.service.BeanMappingService;
 import cz.fi.muni.pa165.service.MonsterService;
 import org.mockito.InjectMocks;
+import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
@@ -20,6 +22,7 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -32,7 +35,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class MonsterFacadeUnitTest {
 
 	private MonsterService monsterService = mock(MonsterService.class);
-	private BeanMappingService beanMappingService = mock(BeanMappingService.class);
+	private BeanMappingService beanMappingService= mock(BeanMappingService.class);
 
 	@InjectMocks
 	private MonsterFacade monsterFacade = new MonsterFacadeImpl(monsterService, beanMappingService);
@@ -42,6 +45,12 @@ public class MonsterFacadeUnitTest {
 	private MonsterDTO chickenDTO;
 	private Monster zombie;
 	private Monster chicken;
+
+	@AfterMethod
+	private void resetMocks() {
+		reset(monsterService);
+		reset(beanMappingService);
+	}
 
 	@BeforeMethod
 	private void setUp() {
@@ -66,6 +75,7 @@ public class MonsterFacadeUnitTest {
 		chicken = new Monster();
 		chicken.setName("Chick");
 		chicken.setId(2L);
+		chicken.setWeight(8.5);
 		chicken.setAgility(MonsterAgility.SLOW);
 
 		chickenDTO = new MonsterDTO();
@@ -114,6 +124,38 @@ public class MonsterFacadeUnitTest {
 		monsterFacade.changeMonsterAgility(change);
 
 		assertThat(zombie.getAgility()).isEqualTo(MonsterAgility.SLOW);
+	}
+
+	@Test
+	public void updateMonster() {
+		when(monsterService.findById(2L)).thenReturn(chicken);
+
+		MonsterUpdateDTO update = new MonsterUpdateDTO();
+		update.setName("New name");
+		update.setId(2L);
+		update.setAgility(MonsterAgility.FAST);
+		update.setWeight(5.8);
+		update.setHeight(2.5);
+
+		monsterFacade.updateMonster(update);
+
+		assertThat(update).isEqualToComparingFieldByField(chicken);
+	}
+
+	@Test
+	public void updateMonsterNotFound() {
+
+		when(monsterService.findById(2L)).thenReturn(null);
+
+		MonsterUpdateDTO update = new MonsterUpdateDTO();
+		update.setId(2L);
+		update.setAgility(MonsterAgility.FAST);
+
+		MonsterDTO updatedMonster = monsterFacade.updateMonster(update);
+
+		verify(beanMappingService, times(0)).mapTo(any(), eq(MonsterDTO.class));
+
+		assertThat(updatedMonster).isEqualTo(null);
 	}
 
 	@Test

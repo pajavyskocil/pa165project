@@ -32,6 +32,9 @@ public class BeanMappingServiceImpl implements BeanMappingService {
 
 	@Override
 	public <T> T mapTo(Object o, Class<T> mapToClass) {
+		if (o == null) {
+			return null;
+		}
 		return dozer.map(o, mapToClass);
 	}
 
