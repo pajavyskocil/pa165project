@@ -32,6 +32,7 @@ export class MonstersComponent implements OnInit {
       },
       error => {
         console.log(error);
+        alert(error.message);
       });
   }
 
@@ -39,8 +40,11 @@ export class MonstersComponent implements OnInit {
     this.http.delete('http://localhost:8080/pa165/rest/monsters/' + id,  {responseType: 'text'}).subscribe(
       data => {
         this.loadMonsters();
-      }
-    );
+      },
+      error => {
+        console.log(error);
+        alert(error.message);
+      });
   }
 }
 

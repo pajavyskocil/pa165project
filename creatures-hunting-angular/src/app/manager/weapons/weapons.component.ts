@@ -23,7 +23,7 @@ export class WeaponsComponent implements OnInit {
   }
 
   loadWeapons(){
-    this.http.get<Weapon[]>('http://localhost:8080/pa165/rest/auth/weapons', { withCredentials: true }).subscribe(
+    this.http.get<Weapon[]>('http://localhost:8080/pa165/rest/weapons').subscribe(
       data => {
         this.weapons = data;
         this.dataSource = new MatTableDataSource(this.weapons);
@@ -32,7 +32,8 @@ export class WeaponsComponent implements OnInit {
         this.showWeapons = true;
       },
       error => {
-        console.log('error: ' + error);
+        console.log(error);
+        alert(error.message);
       }
     );
   }
@@ -41,6 +42,10 @@ export class WeaponsComponent implements OnInit {
     this.http.delete('http://localhost:8080/pa165/rest/weapons/delete/' + id ,  {responseType: 'text'}).subscribe(
       data => {
         this.loadWeapons();
+      },
+      error => {
+        console.log(error);
+        alert(error.message);
       }
     );
   }
