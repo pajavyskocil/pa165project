@@ -10,7 +10,9 @@ export interface Monster {
 export interface Weapon {
   id: number;
   name: string;
+  appropriateMonsters: Monster[];
   type: string;
   range: number;
   magazineCapacity: number;
+
 }

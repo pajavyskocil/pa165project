@@ -7,6 +7,7 @@ import cz.fi.muni.pa165.dto.WeaponCreateDTO;
 import cz.fi.muni.pa165.dto.WeaponDTO;
 import cz.fi.muni.pa165.dto.WeaponUpdateDTO;
 import cz.fi.muni.pa165.enums.WeaponType;
+import cz.fi.muni.pa165.facade.MonsterFacade;
 import cz.fi.muni.pa165.facade.WeaponFacade;
 import cz.fi.muni.pa165.rest.controllers.GlobalExceptionController;
 import cz.fi.muni.pa165.rest.controllers.WeaponController;
@@ -52,8 +53,10 @@ public class WeaponsControllerTest {
 
     private WeaponFacade weaponFacade = mock(WeaponFacade.class);
 
+    private MonsterFacade monsterFacade = mock(MonsterFacade.class);
+
     @InjectMocks
-    private WeaponController weaponController = new WeaponController(weaponFacade);
+    private WeaponController weaponController = new WeaponController(weaponFacade, monsterFacade);
 
     private MockMvc mockMvc;
 
@@ -232,15 +235,20 @@ public class WeaponsControllerTest {
 
     @Test
     public void testAddAppropriateMonster() throws Exception{
+        WeaponDTO pistol = new WeaponDTO();
+        pistol.setName("Pistol");
+        pistol.setId(1L);
+        pistol.setType(WeaponType.OTHER);
+        pistol.setMagazineCapacity(10);
+        pistol.setRange(100);
+
         MonsterDTO monsterDTO = new MonsterDTO();
         monsterDTO.setId(1L);
         monsterDTO.setName("Name");
 
-        String json = convertObjectToJsonBytes(monsterDTO);
-
-        mockMvc.perform(post("/weapons/addAppropriateMonster/1")
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(json))
+        when(monsterFacade.findById(1L)).thenReturn(monsterDTO);
+        when(weaponFacade.findById(1L)).thenReturn(pistol);
+        mockMvc.perform(put("/weapons/1/addAppropriateMonster?monsterId=1"))
                 .andExpect(status().isOk());
 
         verify(weaponFacade, times(1)).addAppropriateMonster(1L, monsterDTO.getId());
@@ -248,17 +256,23 @@ public class WeaponsControllerTest {
 
     @Test
     public void testRemoveAppropriateMonster() throws Exception{
+        WeaponDTO pistol = new WeaponDTO();
+        pistol.setName("Pistol");
+        pistol.setId(1L);
+        pistol.setType(WeaponType.OTHER);
+        pistol.setMagazineCapacity(10);
+        pistol.setRange(100);
+
         MonsterDTO monsterDTO = new MonsterDTO();
         monsterDTO.setId(1L);
         monsterDTO.setName("Name");
 
-        String json = convertObjectToJsonBytes(monsterDTO);
+        when(monsterFacade.findById(1L)).thenReturn(monsterDTO);
+        when(weaponFacade.findById(1L)).thenReturn(pistol);
 
-        weaponController.addAppropriateMonster(1L, monsterDTO);
+        weaponController.addAppropriateMonster(1L, 1L);
 
-        mockMvc.perform(post("/weapons/removeAppropriateMonster/1")
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(json))
+        mockMvc.perform(put("/weapons/1/removeAppropriateMonster?monsterId=1"))
                 .andExpect(status().isOk());
 
         verify(weaponFacade, times(1)).removeAppropriateMonster(1L, monsterDTO.getId());

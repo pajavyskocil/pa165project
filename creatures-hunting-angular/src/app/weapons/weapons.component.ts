@@ -32,18 +32,15 @@ export class WeaponsComponent implements OnInit {
         this.showWeapons = true;
       },
       error => {
-        console.error(error);
+        console.log(error);
       }
     );
   }
 
-  removeWeapons(id){
-    this.http.delete('http://localhost:8080/pa165/rest/weapons/delete/' + id , {responseType: 'text'}).subscribe(
+  removeWeapon(id){
+    this.http.delete('http://localhost:8080/pa165/rest/weapons/delete/' + id ,  {responseType: 'text'}).subscribe(
       data => {
         this.loadWeapons();
-      },
-      error => {
-        console.error(error);
       }
     );
   }

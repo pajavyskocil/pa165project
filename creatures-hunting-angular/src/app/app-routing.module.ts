@@ -4,6 +4,7 @@ import { HomeComponent } from './home/home.component';
 import { MonstersComponent } from './monsters/monsters.component';
 import { WeaponsComponent} from './weapons/weapons.component';
 import {MonsterDetailComponent} from './monster-detail/monster-detail.component';
+import {WeaponDetailComponent} from "./weapon-detail/weapon-detail.component";
 
 const routes: Routes = [
   {
@@ -21,6 +22,10 @@ const routes: Routes = [
   {
     path: 'weapons',
     component: WeaponsComponent
+  },
+  {
+    path: 'weapons/:id',
+    component: WeaponDetailComponent
   }
 ];
 

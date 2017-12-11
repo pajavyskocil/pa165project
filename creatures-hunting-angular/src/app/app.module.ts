@@ -12,6 +12,7 @@ import { MonsterDetailComponent } from './monster-detail/monster-detail.componen
 import { WeaponsComponent} from './weapons/weapons.component';
 
 import { HttpClientModule } from '@angular/common/http';
+import {WeaponDetailComponent} from "./weapon-detail/weapon-detail.component";
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import { HttpClientModule } from '@angular/common/http';
     HomeComponent,
     MonstersComponent,
     WeaponsComponent,
-    MonsterDetailComponent
+    MonsterDetailComponent,
+    WeaponDetailComponent
   ],
   imports: [
     BrowserModule,
