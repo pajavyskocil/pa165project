@@ -7,4 +7,5 @@ package cz.fi.muni.pa165.rest;
 public class ApiUris {
 	public static final String ROOT_URI_MONSTERS = "/monsters";
 	public static final String ROOT_URI_WEAPONS = "/weapons";
+	public static final String ROOT_URI_USERS = "/users";
 }
