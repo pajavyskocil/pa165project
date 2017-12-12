@@ -10,11 +10,11 @@ import { HomeComponent } from './home/home.component';
 import { MonstersComponent } from './monsters/monsters.component';
 import { MonsterDetailComponent } from './monster-detail/monster-detail.component';
 import { WeaponsComponent} from './weapons/weapons.component';
-
 import { HttpClientModule } from '@angular/common/http';
 import {WeaponDetailComponent} from "./weapon-detail/weapon-detail.component";
 import { TestComponent } from './test/test.component';
 import { LoginComponent } from './login/login.component';
+import { UsersComponent } from './users/users.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +25,8 @@ import { LoginComponent } from './login/login.component';
     MonsterDetailComponent,
     WeaponDetailComponent,
     TestComponent,
-    LoginComponent
+    LoginComponent,
+    UsersComponent
   ],
   imports: [
     BrowserModule,

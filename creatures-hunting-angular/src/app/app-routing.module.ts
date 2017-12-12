@@ -3,6 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { HomeComponent } from './home/home.component';
 import { MonstersComponent } from './monsters/monsters.component';
 import { WeaponsComponent} from './weapons/weapons.component';
+import { UsersComponent } from './users/users.component';
 import {MonsterDetailComponent} from './monster-detail/monster-detail.component';
 import {WeaponDetailComponent} from "./weapon-detail/weapon-detail.component";
 import { LoginComponent } from './login/login.component';
@@ -30,6 +31,10 @@ const routes: Routes = [
   },
   { path: 'auth',
     component: LoginComponent
+  },
+  {
+    path: 'auth/users',
+    component: UsersComponent
   }
 ];
 

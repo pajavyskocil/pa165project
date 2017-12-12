@@ -165,7 +165,7 @@ public class UsersController {
 	 *
 	 * @param id identified of the user
 	 */
-	@RequestMapping(value = "/setAdmin", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/setAdmin", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
 	public final void setAdmin(@RequestParam("id") long id){
 		log.debug("Rest setAdmin ({})", id);
 
@@ -184,7 +184,7 @@ public class UsersController {
 	 *
 	 * @param id identified of the user
 	 */
-	@RequestMapping(value = "/removeAdmin", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/removeAdmin", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
 	public final void removeAdmin(@RequestParam("id") long id){
 		log.debug("Rest removeAdmin ({})", id);
 
