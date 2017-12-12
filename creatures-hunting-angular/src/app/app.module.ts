@@ -9,15 +9,19 @@ import { MaterialModule } from './material.module';
 import { HomeComponent } from './home/home.component';
 import { MonstersComponent } from './monsters/monsters.component';
 import { MonsterDetailComponent } from './monster-detail/monster-detail.component';
+import { WeaponsComponent} from './weapons/weapons.component';
 
 import { HttpClientModule } from '@angular/common/http';
+import {WeaponDetailComponent} from "./weapon-detail/weapon-detail.component";
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
     MonstersComponent,
-    MonsterDetailComponent
+    WeaponsComponent,
+    MonsterDetailComponent,
+    WeaponDetailComponent
   ],
   imports: [
     BrowserModule,

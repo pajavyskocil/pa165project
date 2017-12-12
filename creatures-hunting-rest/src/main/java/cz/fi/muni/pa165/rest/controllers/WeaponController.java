@@ -1,21 +1,22 @@
 package cz.fi.muni.pa165.rest.controllers;
 
-import cz.fi.muni.pa165.dto.MonsterDTO;
 import cz.fi.muni.pa165.dto.WeaponCreateDTO;
 import cz.fi.muni.pa165.dto.WeaponDTO;
 import cz.fi.muni.pa165.dto.WeaponUpdateDTO;
-import cz.fi.muni.pa165.entity.Weapon;
 import cz.fi.muni.pa165.enums.WeaponType;
+import cz.fi.muni.pa165.facade.MonsterFacade;
 import cz.fi.muni.pa165.facade.WeaponFacade;
 import cz.fi.muni.pa165.rest.ApiUris;
 import cz.fi.muni.pa165.rest.exceptions.InvalidParameterException;
 import cz.fi.muni.pa165.rest.exceptions.ResourceAlreadyExistingException;
 import cz.fi.muni.pa165.rest.exceptions.ResourceNotFoundException;
 import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,9 +35,12 @@ public class WeaponController {
 
     private final WeaponFacade weaponFacade;
 
+    private final MonsterFacade monsterFacade;
+
     @Inject
-    public WeaponController(WeaponFacade weaponFacade) {
+    public WeaponController(WeaponFacade weaponFacade, MonsterFacade monsterFacade) {
         this.weaponFacade = weaponFacade;
+        this.monsterFacade = monsterFacade;
     }
 
 
@@ -121,54 +125,51 @@ public class WeaponController {
     /**
      * Add appropriate MonsterDTO to weapon.
      *
-     * curl -i -X POST -H
-     * "Content-Type: application/json" --data '{"name":"test","height":155.2,"weight":70.5,"agility":"SLOW"}'
-     * http://localhost:8080/pa165/rest/weapons/addAppropriateWeapons/1
+     * curl -i -X POST  http://localhost:8080/pa165/rest/weapons/7/addAppropriateMonster?monsterId=1
      *
      * @param id identified of the weapon to be updated
-     * @param monsterDTO monsterDTO
      * @throws InvalidParameterException when the given parameters are invalid
      */
-    @RequestMapping(value = "/addAppropriateMonster/{id}", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public final void addAppropriateMonster(@PathVariable("id") long id, @RequestBody MonsterDTO monsterDTO){
-        log.debug("Rest addAppropriateMonster with id ({}) for weapon with id({})", monsterDTO.getId(), id );
 
-        if (monsterDTO == null){
-            throw new InvalidParameterException("Argument monsterDTO is null");
+    @RequestMapping(value = "/{id}/addAppropriateMonster", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
+    public final void addAppropriateMonster(@PathVariable("id") long id, @RequestParam long monsterId){
+
+        log.debug("Rest addAppropriateMonster with id ({}) for weapon with id({})", monsterId, id );
+
+        if (weaponFacade.findById(id) == null) {
+            throw new ResourceNotFoundException("Weapon with id "+ id +" not found!");
         }
-        if (monsterDTO.getId() == null){
-            throw new InvalidParameterException("Value `id` in monster is required!");
+        if (monsterFacade.findById(monsterId) == null){
+            throw new ResourceNotFoundException("Monster with id " + monsterId + " not found!");
         }
-        weaponFacade.addAppropriateMonster(id, monsterDTO.getId());
+        weaponFacade.addAppropriateMonster(id, monsterId);
+
     }
 
     /**
      * Remove appropriate MonsterDTO to weapon.
      *
-     * curl -i -X POST -H
-     * "Content-Type: application/json" --data '{"name":"test","height":155.2,"weight":70.5,"agility":"SLOW"}'
-     * http://localhost:8080/pa165/rest/weapons/removeAppropriateWeapons/1
+     * curl -i -X POST  http://localhost:8080/pa165/rest/weapons/7/removeAppropriateMonster?monsterId=1
      *
      * @param id identified of the weapon to be updated
-     * @param monsterDTO monsterDTO
      * @throws InvalidParameterException when the given parameters are invalid
      */
-    @RequestMapping(value = "/removeAppropriateMonster/{id}", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public final void removeAppropriateMonster(@PathVariable("id") long id, MonsterDTO monsterDTO){
-        log.debug("Rest removeAppropriateMonster with id ({}) for weapon with id({})", monsterDTO.getId(), id );
+    @RequestMapping(value = "/{id}/removeAppropriateMonster", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
+    public final void removeAppropriateMonster(@PathVariable("id") long id, @RequestParam long monsterId){
+        log.debug("Rest removeAppropriateMonster with id ({}) for weapon with id({})", monsterId, id );
 
-        if (monsterDTO == null){
-            throw new InvalidParameterException("Argument monsterDTO is null");
+        if (weaponFacade.findById(id) == null) {
+            throw new ResourceNotFoundException("Weapon with id "+ id +" not found!");
         }
-        if (monsterDTO.getId() == null){
-            throw new InvalidParameterException("Value `id` in monster is required!");
+        if (monsterFacade.findById(monsterId) == null){
+            throw new ResourceNotFoundException("Monster with id " + monsterId + " not found!");
         }
-        weaponFacade.removeAppropriateMonster(id, monsterDTO.getId());
+        weaponFacade.removeAppropriateMonster(id, monsterId);
     }
 
     /**
-     * Get list of Weapons curl -i -X GET
-     * http://localhost:8080/pa165/rest/weapons
+     * Get list of Weapons
+     * curl -i -X GET http://localhost:8080/pa165/rest/weapons
      *
      * @return List<WeaponDTO>
      */
