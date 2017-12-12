@@ -33,6 +33,7 @@ export class WeaponsComponent implements OnInit {
       },
       error => {
         console.log(error);
+        alert(error.message);
       }
     );
   }
@@ -41,6 +42,10 @@ export class WeaponsComponent implements OnInit {
     this.http.delete('http://localhost:8080/pa165/rest/weapons/delete/' + id ,  {responseType: 'text'}).subscribe(
       data => {
         this.loadWeapons();
+      },
+      error => {
+        console.log(error);
+        alert(error.message);
       }
     );
   }
