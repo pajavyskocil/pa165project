@@ -15,14 +15,14 @@ export class MonstersComponent implements OnInit {
   monsters: Monster[] = [];
   dataSource: MatTableDataSource<Monster>;
 
-  constructor(private http: HttpClient) {}
+    constructor(private http: HttpClient) {}
 
   ngOnInit() {
     this.loadMonsters();
   }
 
   loadMonsters() {
-    this.http.get<Monster[]>('http://localhost:8080/pa165/rest/monsters/').subscribe(
+    this.http.get<Monster[]>('http://localhost:8080/pa165/rest/auth/monsters/', { withCredentials: true }).subscribe(
       data => {
         this.monsters = data;
         this.dataSource = new MatTableDataSource(this.monsters);

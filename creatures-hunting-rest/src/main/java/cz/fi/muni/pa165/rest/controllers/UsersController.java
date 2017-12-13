@@ -5,6 +5,8 @@ import cz.fi.muni.pa165.dto.UserAuthenticateDTO;
 import cz.fi.muni.pa165.dto.UserDTO;
 import cz.fi.muni.pa165.facade.UserFacade;
 import cz.fi.muni.pa165.rest.ApiUris;
+import cz.fi.muni.pa165.rest.SecurityUtils;
+import cz.fi.muni.pa165.rest.exceptions.NotAuthorizedException;
 import cz.fi.muni.pa165.rest.exceptions.ResourceAlreadyExistingException;
 import cz.fi.muni.pa165.rest.exceptions.ResourceNotFoundException;
 import org.springframework.http.MediaType;
@@ -18,6 +20,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.inject.Inject;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 /**
@@ -43,7 +48,7 @@ public class UsersController {
 	 * http://localhost:8080/pa165/rest/users
 	 *
 	 * @return list of UserDTOs
-	 * @throws JsonProcessingException
+	 * @throws JsonProcessingException exception
 	 */
 	@RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public final List<UserDTO> getAllUsers() throws JsonProcessingException {
@@ -58,7 +63,7 @@ public class UsersController {
 	 *
 	 * @param id user identifier
 	 * @return UserDTO
-	 * @throws ResourceNotFoundException
+	 * @throws ResourceNotFoundException exception
 	 */
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public final UserDTO findUserById(@PathVariable("id") long id) throws Exception {
@@ -77,7 +82,7 @@ public class UsersController {
 	 *
 	 * @param email user email
 	 * @return UserDTO
-	 * @throws ResourceNotFoundException
+	 * @throws ResourceNotFoundException exception
 	 */
 	@RequestMapping(value = "/filter", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public final UserDTO findUserByEmail(@RequestParam("email") String email) throws Exception {
@@ -116,7 +121,7 @@ public class UsersController {
 	 * http://localhost:8080/pa165/rest/users/register?unencryptedPassword=0000
 	 *
 	 * @param userDTO with required fields for creation
-	 * @param unencryptedPassword
+	 * @param unencryptedPassword password
 	 * @throws ResourceAlreadyExistingException when user with given email already exists
 	 */
 	@RequestMapping(value = "/register", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE,
@@ -138,7 +143,7 @@ public class UsersController {
 	 * http://localhost:8080/pa165/rest/users/isAdmin?id=1
 	 * @param id user identifier
 	 * @return true if is user admin, false otherwise
-	 * @throws ResourceNotFoundException
+	 * @throws ResourceNotFoundException exception
 	 */
 	@RequestMapping(value = "/isAdmin", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public final boolean isAdmin(@RequestParam("id") long id) throws Exception {
@@ -185,31 +190,6 @@ public class UsersController {
 
 		try {
 			userFacade.removeAdmin(id);
-		} catch(Exception e) {
-			throw new ResourceNotFoundException("User not found");
-		}
-	}
-
-	/**
-	 * Authenticate User by identifier and password curl -i -X GET
-	 * 'http://localhost:8080/pa165/rest/users/authenticate?id=1&password=1234'
-	 *
-	 * @param id
-	 * @param password
-	 * @return true if authentication succeeded
-	 * @throws ResourceNotFoundException
-	 */
-	@RequestMapping(value = "/authenticate", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	public final boolean authenticate(@RequestParam("id") long id, @RequestParam("password") String password) throws Exception {
-
-		log.debug("rest authenticate({}, {})", id, password);
-
-		UserAuthenticateDTO userAuthenticateDTO = new UserAuthenticateDTO();
-		userAuthenticateDTO.setPassword(password);
-		userAuthenticateDTO.setUserId(id);
-
-		try {
-			return userFacade.authenticate(userAuthenticateDTO);
 		} catch(Exception e) {
 			throw new ResourceNotFoundException("User not found");
 		}

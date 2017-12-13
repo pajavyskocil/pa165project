@@ -98,7 +98,7 @@ public class UsersControllerTest {
 		doReturn(Collections.unmodifiableList(users)).when(
 				userFacade).getAllUsers();
 
-		mockMvc.perform(get("/users"))
+		mockMvc.perform(get("/auth/users"))
 				.andExpect(status().isOk())
 				.andExpect(
 						content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON_VALUE))
@@ -121,7 +121,7 @@ public class UsersControllerTest {
 		String json = convertObjectToJsonBytes(userDTO);
 
 		mockMvc.perform(
-				post("/users/register?unencryptedPassword=1234").contentType(MediaType.APPLICATION_JSON_VALUE)
+				post("/auth/users/register?unencryptedPassword=1234").contentType(MediaType.APPLICATION_JSON_VALUE)
 						.content(json))
 				.andExpect(status().isOk());
 
@@ -132,29 +132,21 @@ public class UsersControllerTest {
 
 		doReturn(false).when(userFacade).isAdmin(any(Long.class));
 
-		mockMvc.perform(get("/users/isAdmin?id=1")).andExpect(content().string("false"));
+		mockMvc.perform(get("/auth/users/isAdmin?id=1")).andExpect(content().string("false"));
 	}
 
 	@Test
 	public void testRemoveAdmin() throws Exception {
 
-		mockMvc.perform(put("/users/setAdmin?id=1").contentType(MediaType.APPLICATION_JSON))
+		mockMvc.perform(put("/auth/users/setAdmin?id=1").contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk());
 	}
 
 	@Test
 	public void testSetAdmin() throws Exception {
 
-		mockMvc.perform(put("/users/removeAdmin?id=1").contentType(MediaType.APPLICATION_JSON))
+		mockMvc.perform(put("/auth/users/removeAdmin?id=1").contentType(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk());
-	}
-
-	@Test
-	public void testAuthenticate() throws Exception {
-
-		doReturn(true).when(userFacade).authenticate(any(UserAuthenticateDTO.class));
-
-		mockMvc.perform(get("/users/authenticate?id=1&password=1234")).andExpect(content().string("true"));
 	}
 
 	@Test
@@ -162,7 +154,7 @@ public class UsersControllerTest {
 
 		when(userFacade.findUserByEmail("email@lucia.com")).thenReturn(userDTO3);
 
-		mockMvc.perform(get("/users/filter?email=email@lucia.com"))
+		mockMvc.perform(get("/auth/users/filter?email=email@lucia.com"))
 				.andExpect(jsonPath("$.[?(@.id==3)].email").value("email@lucia.com"));
 	}
 
@@ -171,14 +163,14 @@ public class UsersControllerTest {
 
 		when(userFacade.findUserById(1L)).thenReturn(userDTO1);
 
-		mockMvc.perform(get("/users/1"))
+		mockMvc.perform(get("/auth/users/1"))
 				.andExpect(jsonPath("$.[?(@.id==1)].email").value("email@lojzo.com"));
 	}
 
 	@Test
 	public void testDeleteUser() throws Exception {
 
-		mockMvc.perform(delete("/users/1"))
+		mockMvc.perform(delete("/auth/users/1"))
 				.andExpect(status().isOk());
 
 		verify(userFacade, times(1)).deleteUser(1L);

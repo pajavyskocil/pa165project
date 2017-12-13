@@ -13,6 +13,7 @@ import { WeaponsComponent} from './weapons/weapons.component';
 
 import { HttpClientModule } from '@angular/common/http';
 import {WeaponDetailComponent} from "./weapon-detail/weapon-detail.component";
+import { TestComponent } from './test/test.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import {WeaponDetailComponent} from "./weapon-detail/weapon-detail.component";
     MonstersComponent,
     WeaponsComponent,
     MonsterDetailComponent,
-    WeaponDetailComponent
+    WeaponDetailComponent,
+    TestComponent
   ],
   imports: [
     BrowserModule,

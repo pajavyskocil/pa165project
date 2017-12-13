@@ -5,27 +5,31 @@ import { MonstersComponent } from './monsters/monsters.component';
 import { WeaponsComponent} from './weapons/weapons.component';
 import {MonsterDetailComponent} from './monster-detail/monster-detail.component';
 import {WeaponDetailComponent} from "./weapon-detail/weapon-detail.component";
+import {TestComponent} from "./test/test.component";
 
 const routes: Routes = [
   {
-    path: '',
+    path: 'auth/',
     component: HomeComponent,
   },
   {
-    path: 'monsters',
+    path: 'auth/monsters',
     component: MonstersComponent
   },
   {
-    path: 'monsters/:id',
+    path: 'auth/monsters/:id',
     component: MonsterDetailComponent
   },
   {
-    path: 'weapons',
+    path: 'auth/weapons',
     component: WeaponsComponent
   },
   {
-    path: 'weapons/:id',
+    path: 'auth/weapons/:id',
     component: WeaponDetailComponent
+  },
+  { path: 'auth',
+    component: TestComponent
   }
 ];
 
