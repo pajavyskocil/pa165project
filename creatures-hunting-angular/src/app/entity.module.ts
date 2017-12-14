@@ -14,5 +14,12 @@ export interface Weapon {
   type: string;
   range: number;
   magazineCapacity: number;
+}
 
+export interface User {
+  id: number;
+  firstName: string;
+  lastName: string;
+  email: string;
+  role: string;
 }
