@@ -144,10 +144,10 @@ public class SampleDataLoadingFacadeImpl implements SampleDataLoadingFacade {
 
 		user3.setFirstName("Lucia");
 		user3.setLastName("Srnova");
-		user3.setEmail("lucia@srnova.com");
+		user3.setEmail("admin@admin.cz");
 
 		userService.registerUser(user1, "1234");
 		userService.registerUser(user2, "1234");
-		userService.registerUser(user3, "1234");
+		userService.registerUser(user3, "admin");
 	}
 }

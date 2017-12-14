@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MatTableDataSource } from '@angular/material';
 import { HttpClient } from '@angular/common/http';
-import { Weapon } from '../entity.module';
+import { Weapon } from '../../entity.module';
 
 @Component({
   selector: 'app-weapons',

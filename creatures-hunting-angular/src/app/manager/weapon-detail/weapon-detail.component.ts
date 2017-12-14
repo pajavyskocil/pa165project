@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import {Monster, Weapon} from '../entity.module';
+import {Monster, Weapon} from '../../entity.module';
 import { ActivatedRoute } from '@angular/router';
 import {MatTableDataSource} from "@angular/material";
 
