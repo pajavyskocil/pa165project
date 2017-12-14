@@ -5,11 +5,11 @@ import { MonstersComponent } from './monsters/monsters.component';
 import { WeaponsComponent} from './weapons/weapons.component';
 import {MonsterDetailComponent} from './monster-detail/monster-detail.component';
 import {WeaponDetailComponent} from "./weapon-detail/weapon-detail.component";
-import {TestComponent} from "./test/test.component";
+import { LoginComponent } from './login/login.component';
 
 const routes: Routes = [
   {
-    path: 'auth/',
+    path: 'auth/home',
     component: HomeComponent,
   },
   {
@@ -29,7 +29,7 @@ const routes: Routes = [
     component: WeaponDetailComponent
   },
   { path: 'auth',
-    component: TestComponent
+    component: LoginComponent
   }
 ];
 

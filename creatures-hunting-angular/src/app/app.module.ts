@@ -14,6 +14,7 @@ import { WeaponsComponent} from './weapons/weapons.component';
 import { HttpClientModule } from '@angular/common/http';
 import {WeaponDetailComponent} from "./weapon-detail/weapon-detail.component";
 import { TestComponent } from './test/test.component';
+import { LoginComponent } from './login/login.component';
 
 @NgModule({
   declarations: [
@@ -23,7 +24,8 @@ import { TestComponent } from './test/test.component';
     WeaponsComponent,
     MonsterDetailComponent,
     WeaponDetailComponent,
-    TestComponent
+    TestComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,
