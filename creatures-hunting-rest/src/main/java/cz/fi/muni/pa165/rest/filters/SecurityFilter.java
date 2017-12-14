@@ -44,8 +44,8 @@ public class SecurityFilter implements Filter {
 		Cookie[] cookies = request.getCookies();
 
 		if (cookies == null) {
-			response.sendError(401, "Not logged in.");
 			filterChain.doFilter(request, response);
+			response.sendError(401, "Not logged in.");
 			return;
 		}
 
@@ -58,15 +58,15 @@ public class SecurityFilter implements Filter {
 		}
 
 		if (token == null) {
-			response.sendError(401, "Not logged in.");
 			filterChain.doFilter(request, response);
+			response.sendError(401, "Not logged in.");
 			return;
 		}
 
 		String[] data = token.split(";", 2);
 		if (data.length != 2) {
-			response.sendError(401, "Not logged in.");
 			filterChain.doFilter(request, response);
+			response.sendError(401, "Not logged in.");
 			return;
 		}
 
@@ -76,8 +76,8 @@ public class SecurityFilter implements Filter {
 		try {
 			id = Long.parseLong(data[0]);
 		} catch (NumberFormatException e) {
-			response.sendError(401, "Not logged in.");
 			filterChain.doFilter(request, response);
+			response.sendError(401, "Not logged in.");
 			return;
 		}
 		email = data[1];
@@ -88,8 +88,8 @@ public class SecurityFilter implements Filter {
 
 		UserDTO user = userFacade.findUserById(id);
 		if (!user.getEmail().equals(email)) {
-			response.sendError(401, "Not logged in.");
 			filterChain.doFilter(request, response);
+			response.sendError(401, "Not logged in.");
 			return;
 		}
 
