@@ -1,14 +1,14 @@
 package cz.fi.muni.pa165.rest.controllers;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import cz.fi.muni.pa165.dto.UserAuthenticateDTO;
 import cz.fi.muni.pa165.dto.UserDTO;
+import cz.fi.muni.pa165.enums.UserRole;
 import cz.fi.muni.pa165.facade.UserFacade;
 import cz.fi.muni.pa165.rest.ApiUris;
-import cz.fi.muni.pa165.rest.SecurityUtils;
-import cz.fi.muni.pa165.rest.exceptions.NotAuthorizedException;
+import cz.fi.muni.pa165.rest.exceptions.PrivilegeException;
 import cz.fi.muni.pa165.rest.exceptions.ResourceAlreadyExistingException;
 import cz.fi.muni.pa165.rest.exceptions.ResourceNotFoundException;
+import cz.fi.muni.pa165.rest.security.RoleResolver;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -20,9 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.inject.Inject;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 /**
@@ -37,10 +35,12 @@ public class UsersController {
 	private final static Logger log = LoggerFactory.getLogger(MonstersController.class);
 
 	private final UserFacade userFacade;
+	private final RoleResolver roleResolver;
 
 	@Inject
-	public UsersController(UserFacade monsterFacade) {
+	public UsersController(UserFacade monsterFacade, RoleResolver roleResolver) {
 		this.userFacade = monsterFacade;
+		this.roleResolver = roleResolver;
 	}
 
 	/**
@@ -51,9 +51,14 @@ public class UsersController {
 	 * @throws JsonProcessingException exception
 	 */
 	@RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	public final List<UserDTO> getAllUsers() throws JsonProcessingException {
+	public final List<UserDTO> getAllUsers(HttpServletRequest request) throws JsonProcessingException {
 
 		log.debug("rest getAllUsers()");
+
+		if(!roleResolver.hasRole(request, UserRole.ADMIN)) {
+			throw new PrivilegeException("Not permitted.");
+		}
+
 		return userFacade.getAllUsers();
 	}
 
@@ -66,9 +71,15 @@ public class UsersController {
 	 * @throws ResourceNotFoundException exception
 	 */
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	public final UserDTO findUserById(@PathVariable("id") long id) throws Exception {
+	public final UserDTO findUserById(@PathVariable("id") long id, HttpServletRequest request) throws Exception {
 
 		log.debug("rest findUserById({})", id);
+
+		if(!roleResolver.hasRole(request, UserRole.ADMIN) &&
+				!roleResolver.isSelf(request, userFacade.findUserById(id)) ) {
+			throw new PrivilegeException("Not permitted.");
+		}
+
 		UserDTO userDTO = userFacade.findUserById(id);
 		if (userDTO == null){
 			throw new ResourceNotFoundException("User not found");
@@ -85,9 +96,15 @@ public class UsersController {
 	 * @throws ResourceNotFoundException exception
 	 */
 	@RequestMapping(value = "/filter", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	public final UserDTO findUserByEmail(@RequestParam("email") String email) throws Exception {
+	public final UserDTO findUserByEmail(@RequestParam("email") String email, HttpServletRequest request) throws Exception {
 
 		log.debug("rest findUserByEamil({})", email);
+
+		if(!roleResolver.hasRole(request, UserRole.ADMIN) &&
+				!roleResolver.isSelf(request, userFacade.findUserByEmail(email)) ) {
+			throw new PrivilegeException("Not permitted.");
+		}
+
 		UserDTO userDTO = userFacade.findUserByEmail(email);
 		if (userDTO == null){
 			throw new ResourceNotFoundException("User not found");
@@ -103,9 +120,14 @@ public class UsersController {
 	 * @throws ResourceNotFoundException when user with given ID wasn't found
 	 */
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public final void deleteUser(@PathVariable("id") long id) {
+	public final void deleteUser(@PathVariable("id") long id, HttpServletRequest request) {
 
 		log.debug("rest deleteUser({})", id);
+
+		if(!roleResolver.hasRole(request, UserRole.ADMIN) &&
+				!roleResolver.isSelf(request, userFacade.findUserById(id)) ) {
+			throw new PrivilegeException("Not permitted.");
+		}
 
 		try {
 			userFacade.deleteUser(id);
@@ -126,9 +148,15 @@ public class UsersController {
 	 */
 	@RequestMapping(value = "/register", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE,
 			produces = MediaType.APPLICATION_JSON_VALUE)
-	public final void registerUser(@RequestBody UserDTO userDTO, @RequestParam("unencryptedPassword") String unencryptedPassword){
+	public final void registerUser(@RequestBody UserDTO userDTO,
+	                               @RequestParam("unencryptedPassword") String unencryptedPassword,
+	                               HttpServletRequest request){
 
 		log.debug("Rest registerUser ({}, {})" , userDTO, unencryptedPassword);
+
+		if(!roleResolver.hasRole(request, UserRole.ADMIN)) {
+			throw new PrivilegeException("Not permitted.");
+		}
 
 		UserDTO foundUser = userFacade.findUserByEmail(userDTO.getEmail());
 		if (foundUser != null){
@@ -146,9 +174,14 @@ public class UsersController {
 	 * @throws ResourceNotFoundException exception
 	 */
 	@RequestMapping(value = "/isAdmin", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	public final boolean isAdmin(@RequestParam("id") long id) throws Exception {
+	public final boolean isAdmin(@RequestParam("id") long id, HttpServletRequest request) throws Exception {
 
 		log.debug("rest isAdmin({})", id);
+
+		if(!roleResolver.hasRole(request, UserRole.ADMIN) &&
+				!roleResolver.isSelf(request, userFacade.findUserById(id)) ) {
+			throw new PrivilegeException("Not permitted.");
+		}
 
 		try {
 			return userFacade.isAdmin(id);
@@ -165,9 +198,13 @@ public class UsersController {
 	 *
 	 * @param id identified of the user
 	 */
-	@RequestMapping(value = "/setAdmin", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
-	public final void setAdmin(@RequestParam("id") long id){
+	@RequestMapping(value = "/setAdmin", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+	public final void setAdmin(@RequestParam("id") long id, HttpServletRequest request){
 		log.debug("Rest setAdmin ({})", id);
+
+		if(!roleResolver.hasRole(request, UserRole.ADMIN)) {
+			throw new PrivilegeException("Not permitted.");
+		}
 
 		try {
 			userFacade.setAdmin(id);
@@ -184,9 +221,13 @@ public class UsersController {
 	 *
 	 * @param id identified of the user
 	 */
-	@RequestMapping(value = "/removeAdmin", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
-	public final void removeAdmin(@RequestParam("id") long id){
+	@RequestMapping(value = "/removeAdmin", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+	public final void removeAdmin(@RequestParam("id") long id, HttpServletRequest request){
 		log.debug("Rest removeAdmin ({})", id);
+
+		if(!roleResolver.hasRole(request, UserRole.ADMIN)) {
+			throw new PrivilegeException("Not permitted.");
+		}
 
 		try {
 			userFacade.removeAdmin(id);

@@ -15,10 +15,9 @@ import java.io.IOException;
 
 import cz.fi.muni.pa165.dto.UserDTO;
 import cz.fi.muni.pa165.facade.UserFacade;
-import cz.fi.muni.pa165.rest.SecurityUtils;
-import cz.fi.muni.pa165.rest.exceptions.NotAuthorizedException;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpRequest;
+
+import cz.fi.muni.pa165.rest.security.SecurityUtils;
+
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
 /**
@@ -46,25 +45,28 @@ public class SecurityFilter implements Filter {
 
 		if (cookies == null) {
 			response.sendError(401, "Not logged in.");
+			filterChain.doFilter(request, response);
 			return;
 		}
 
 		String token = null;
 
 		for (Cookie cookie : cookies) {
-			if (SecurityUtils.COOKIE.equals(cookie.getName())) {
+			if (SecurityUtils.AUTH_COOKIE.equals(cookie.getName())) {
 				token = SecurityUtils.decrypt(SecurityUtils.KEY, SecurityUtils.INIT_VECTOR, cookie.getValue());
 			}
 		}
 
 		if (token == null) {
 			response.sendError(401, "Not logged in.");
+			filterChain.doFilter(request, response);
 			return;
 		}
 
 		String[] data = token.split(";", 2);
 		if (data.length != 2) {
 			response.sendError(401, "Not logged in.");
+			filterChain.doFilter(request, response);
 			return;
 		}
 
@@ -75,6 +77,7 @@ public class SecurityFilter implements Filter {
 			id = Long.parseLong(data[0]);
 		} catch (NumberFormatException e) {
 			response.sendError(401, "Not logged in.");
+			filterChain.doFilter(request, response);
 			return;
 		}
 		email = data[1];
@@ -86,10 +89,11 @@ public class SecurityFilter implements Filter {
 		UserDTO user = userFacade.findUserById(id);
 		if (!user.getEmail().equals(email)) {
 			response.sendError(401, "Not logged in.");
+			filterChain.doFilter(request, response);
 			return;
 		}
 
-		request.setAttribute("authenticatedUser", user);
+		request.setAttribute(SecurityUtils.AUTHENTICATE_USER, user);
 
 		filterChain.doFilter(request, response);
 	}

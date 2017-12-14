@@ -21,11 +21,22 @@ export class MonsterDetailComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.http.get<Monster>('http://localhost:8080/pa165/rest/monsters/' + this.monsterId).subscribe(
+    this.http.get<Monster>('http://localhost:8080/pa165/rest/auth/monsters/' + this.monsterId, { withCredentials: true }).subscribe(
       data => {
         this.monster = data;
         this.showMonster = true;
         this.selectedAgility = data.agility == null ? 'null' : data.agility;
       });
+    this.http.post<Monster>('http://localhost:8080/pa165/rest/auth/monsters/create', {
+    "name": "asdfas",
+    "height": 55,
+    "weight": 54,}).subscribe(
+      data => {
+        console.log(data)
+      },
+      error2 => {
+        console.log(error2)
+      }
+    )
   }
 }

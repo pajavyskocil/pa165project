@@ -5,12 +5,14 @@ import cz.fi.muni.pa165.dto.AreaCreateDTO;
 import cz.fi.muni.pa165.dto.AreaDTO;
 import cz.fi.muni.pa165.dto.AreaUpdateDTO;
 import cz.fi.muni.pa165.enums.AreaType;
+import cz.fi.muni.pa165.enums.UserRole;
 import cz.fi.muni.pa165.facade.AreaFacade;
 import cz.fi.muni.pa165.facade.MonsterFacade;
 import cz.fi.muni.pa165.rest.ApiUris;
 import cz.fi.muni.pa165.rest.exceptions.InvalidParameterException;
 import cz.fi.muni.pa165.rest.exceptions.ResourceAlreadyExistingException;
 import cz.fi.muni.pa165.rest.exceptions.ResourceNotFoundException;
+import cz.fi.muni.pa165.rest.security.RoleResolver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
@@ -21,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import org.springframework.data.repository.query.Param;
 
@@ -36,15 +39,17 @@ public class AreaController {
 
     private final AreaFacade areaFacade;
     private final MonsterFacade monsterFacade;
+    private final RoleResolver roleResolver;
 
     @Inject
-    public AreaController(AreaFacade areaFacade, MonsterFacade monsterFacade) {
+    public AreaController(AreaFacade areaFacade, MonsterFacade monsterFacade, RoleResolver roleResolver) {
         this.areaFacade = areaFacade;
         this.monsterFacade = monsterFacade;
+        this.roleResolver = roleResolver;
     }
 
     /**
-     * Get list of Areas curl -i -X GET http://localhost:8080/pa165/rest/areas
+     * Get list of Areas curl -i -X GET http://localhost:8080/pa165/rest/auth/areas
      *
      * @return List<AreaDTO>
      */
@@ -67,9 +72,11 @@ public class AreaController {
      */
     @RequestMapping(value = "/create", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public final AreaDTO createArea(@RequestBody AreaCreateDTO area) {
+    public final AreaDTO createArea(@RequestBody AreaCreateDTO area, HttpServletRequest request) {
 
         log.debug("rest createArea({})", area);
+
+        roleResolver.hasRole(request, UserRole.ADMIN);
 
         AreaDTO areaWithSameName = areaFacade.findByName(area.getName());
         if (areaWithSameName != null) {
@@ -88,9 +95,11 @@ public class AreaController {
      * @throws ResourceNotFoundException when area with given ID wasn't found
      */
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public final void deleteArea(@PathVariable("id") long id) {
+    public final void deleteArea(@PathVariable("id") long id, HttpServletRequest request) {
 
         log.debug("rest deleteArea({})", id);
+
+        roleResolver.hasRole(request, UserRole.ADMIN);
 
         try {
             areaFacade.deleteArea(id);
@@ -114,9 +123,11 @@ public class AreaController {
      */
     @RequestMapping(value = "/update", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public final AreaDTO updateArea(@RequestBody AreaUpdateDTO areaUpdate) {
+    public final AreaDTO updateArea(@RequestBody AreaUpdateDTO areaUpdate, HttpServletRequest request) {
 
         log.debug("rest updateArea({})", areaUpdate);
+
+        roleResolver.hasRole(request, UserRole.ADMIN);
 
         if (areaUpdate.getId() == null) {
             throw new InvalidParameterException("Value 'id' is required.");

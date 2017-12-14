@@ -1,13 +1,13 @@
-package cz.fi.muni.pa165.rest;
+package cz.fi.muni.pa165.rest.security;
 
 import cz.fi.muni.pa165.dto.UserDTO;
+import cz.fi.muni.pa165.enums.UserRole;
 import org.apache.commons.codec.binary.Base64;
 
 import javax.crypto.Cipher;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 import javax.servlet.http.Cookie;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
@@ -17,9 +17,12 @@ import java.util.Properties;
  */
 public class SecurityUtils {
 
-	public static final String COOKIE = "creatures-cookie-token";
+	public static final String AUTH_COOKIE = "creatures-token";
+	public static final String IS_ADMIN_COOKIE = "creatures-is_admin";
 	public static final String INIT_VECTOR;
 	public static final String KEY;
+	public static final String AUTHENTICATE_USER = "authenticatedUser";
+	public static final int COOKIE_AGE = -1;
 
 	static {
 		try(InputStream input = SecurityUtils.class.getResourceAsStream("/server.properties")) {
@@ -33,12 +36,21 @@ public class SecurityUtils {
 		}
 	}
 
-	public static Cookie generateCookie(UserDTO user) {
+	public static Cookie generateIsAdminCookie(UserDTO user) {
+		String value = UserRole.ADMIN.equals(user.getRole()) ? "true" : "false";
+
+		Cookie cookie = new Cookie(IS_ADMIN_COOKIE, value);
+		cookie.setMaxAge(COOKIE_AGE);
+		cookie.setHttpOnly(false);
+		return cookie;
+	}
+
+	public static Cookie generateAuthCookie(UserDTO user) {
 		String userData = user.getId() + ";" + user.getEmail();
 
 		String token = encrypt(KEY, INIT_VECTOR, userData);
-		Cookie cookie = new Cookie(COOKIE, token);
-		cookie.setMaxAge(600);
+		Cookie cookie = new Cookie(AUTH_COOKIE, token);
+		cookie.setMaxAge(COOKIE_AGE);
 		cookie.setHttpOnly(false);
 		return cookie;
 	}

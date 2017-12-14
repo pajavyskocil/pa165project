@@ -24,7 +24,7 @@ public class AllowOriginInterceptor extends HandlerInterceptorAdapter {
 		response.setHeader("Access-Control-Allow-Methods",
 				"GET, POST, PUT, DELETE, OPTIONS");
 		response.setHeader("Access-Control-Allow-Credentials", "true");
-		response.setHeader("Access-Control-Allow-Headers","Content-Type");
+		response.setHeader("Access-Control-Allow-Headers","Content-Type, *");
 		return true;
 	}
 

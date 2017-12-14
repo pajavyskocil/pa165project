@@ -6,6 +6,7 @@ import cz.fi.muni.pa165.dto.UserAuthenticateDTO;
 import cz.fi.muni.pa165.dto.UserDTO;
 import cz.fi.muni.pa165.facade.UserFacade;
 import cz.fi.muni.pa165.rest.controllers.UsersController;
+import cz.fi.muni.pa165.rest.security.RoleResolver;
 import org.mockito.InjectMocks;
 import org.mockito.MockitoAnnotations;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
@@ -48,9 +49,10 @@ import java.util.List;
 public class UsersControllerTest {
 
 	private UserFacade userFacade = mock(UserFacade.class);
+	private RoleResolver roleResolver = mock(RoleResolver.class);
 
 	@InjectMocks
-	private UsersController usersController = new UsersController(userFacade);
+	private UsersController usersController = new UsersController(userFacade, roleResolver);
 
 	private MockMvc mockMvc;
 
@@ -86,6 +88,12 @@ public class UsersControllerTest {
 		userDTO3.setFirstName("Lucia");
 		userDTO3.setLastName("Mala");
 		userDTO3.setEmail("email@lucia.com");
+	}
+
+	@BeforeMethod
+	public void setUpResolver() {
+		when(roleResolver.isSelf(any(), any())).thenReturn(true);
+		when(roleResolver.hasRole(any(), any())).thenReturn(true);
 	}
 
 	@Test

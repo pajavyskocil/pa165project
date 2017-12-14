@@ -11,6 +11,7 @@ import cz.fi.muni.pa165.facade.AreaFacade;
 import cz.fi.muni.pa165.facade.MonsterFacade;
 import cz.fi.muni.pa165.rest.controllers.GlobalExceptionController;
 import cz.fi.muni.pa165.rest.controllers.AreaController;
+import cz.fi.muni.pa165.rest.security.RoleResolver;
 import org.mockito.InjectMocks;
 import org.mockito.MockitoAnnotations;
 import org.springframework.http.MediaType;
@@ -21,6 +22,7 @@ import org.springframework.web.method.annotation.ExceptionHandlerMethodResolver;
 import org.springframework.web.servlet.mvc.method.annotation.ExceptionHandlerExceptionResolver;
 import org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod;
 import org.testng.annotations.BeforeClass;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import java.io.IOException;
@@ -29,6 +31,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
@@ -53,9 +56,10 @@ public class AreaControllerTest {
 
     private AreaFacade areaFacade = mock(AreaFacade.class);
     private MonsterFacade monsterFacade = mock(MonsterFacade.class);
+    private RoleResolver roleResolver = mock(RoleResolver.class);
 
     @InjectMocks
-    private AreaController areaController = new AreaController(areaFacade, monsterFacade);
+    private AreaController areaController = new AreaController(areaFacade, monsterFacade, roleResolver);
 
     private MockMvc mockMvc;
 
@@ -66,6 +70,12 @@ public class AreaControllerTest {
                 .setMessageConverters(new MappingJackson2HttpMessageConverter())
                 .setHandlerExceptionResolvers(createExceptionResolver())
                 .build();
+    }
+
+    @BeforeMethod
+    public void setUpResolver() {
+        when(roleResolver.isSelf(any(), any())).thenReturn(true);
+        when(roleResolver.hasRole(any(), any())).thenReturn(true);
     }
 
     private List<AreaDTO> createAreas() {

@@ -4,7 +4,7 @@ import cz.fi.muni.pa165.dto.UserAuthenticateDTO;
 import cz.fi.muni.pa165.dto.UserDTO;
 import cz.fi.muni.pa165.facade.UserFacade;
 import cz.fi.muni.pa165.rest.ApiUris;
-import cz.fi.muni.pa165.rest.SecurityUtils;
+import cz.fi.muni.pa165.rest.security.SecurityUtils;
 import cz.fi.muni.pa165.rest.exceptions.NotAuthorizedException;
 import cz.fi.muni.pa165.rest.exceptions.ResourceNotFoundException;
 import org.slf4j.Logger;
@@ -61,8 +61,13 @@ public class AuthController {
 
 		try {
 			if(userFacade.authenticate(userAuthenticateDTO)) {
-				Cookie cookie = SecurityUtils.generateCookie(userFacade.findUserById(userAuthenticateDTO.getUserId()));
-				response.addCookie(cookie);
+				UserDTO user = userFacade.findUserById(userAuthenticateDTO.getUserId());
+
+				Cookie authCookie = SecurityUtils.generateAuthCookie(user);
+				Cookie isAdminCookie = SecurityUtils.generateIsAdminCookie(user);
+
+				response.addCookie(authCookie);
+				response.addCookie(isAdminCookie);
 				return true;
 			} else {
 				throw new NotAuthorizedException("Invalid login combination.");
@@ -85,20 +90,25 @@ public class AuthController {
 
 		Cookie[] cookies = request.getCookies();
 
-		Cookie creaturesCookie = null;
+		Cookie authCookie = null;
+		Cookie isAdminCookie = null;
 
 		for (Cookie cookie : cookies) {
-			if (SecurityUtils.COOKIE.equals(cookie.getName())) {
-				creaturesCookie = cookie;
+			if (SecurityUtils.AUTH_COOKIE.equals(cookie.getName())) {
+				authCookie = cookie;
+			} else if (SecurityUtils.IS_ADMIN_COOKIE.equals(cookie.getName())){
+				isAdminCookie = cookie;
 			}
 		}
 
-		if (creaturesCookie == null) {
+		if (authCookie == null || isAdminCookie == null) {
 			return false;
 		}
 
-		creaturesCookie.setMaxAge(0);
-		response.addCookie(creaturesCookie);
+		authCookie.setMaxAge(0);
+		isAdminCookie.setMaxAge(0);
+		response.addCookie(authCookie);
+		response.addCookie(isAdminCookie);
 		return true;
 	}
 }

@@ -3,15 +3,17 @@ package cz.fi.muni.pa165.rest.controllers;
 import cz.fi.muni.pa165.dto.WeaponCreateDTO;
 import cz.fi.muni.pa165.dto.WeaponDTO;
 import cz.fi.muni.pa165.dto.WeaponUpdateDTO;
+import cz.fi.muni.pa165.enums.UserRole;
 import cz.fi.muni.pa165.enums.WeaponType;
 import cz.fi.muni.pa165.facade.MonsterFacade;
 import cz.fi.muni.pa165.facade.WeaponFacade;
 import cz.fi.muni.pa165.rest.ApiUris;
 import cz.fi.muni.pa165.rest.exceptions.InvalidParameterException;
+import cz.fi.muni.pa165.rest.exceptions.PrivilegeException;
 import cz.fi.muni.pa165.rest.exceptions.ResourceAlreadyExistingException;
 import cz.fi.muni.pa165.rest.exceptions.ResourceNotFoundException;
+import cz.fi.muni.pa165.rest.security.RoleResolver;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,6 +24,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -37,10 +40,13 @@ public class WeaponController {
 
     private final MonsterFacade monsterFacade;
 
+    private final RoleResolver roleResolver;
+
     @Inject
-    public WeaponController(WeaponFacade weaponFacade, MonsterFacade monsterFacade) {
+    public WeaponController(WeaponFacade weaponFacade, MonsterFacade monsterFacade, RoleResolver roleResolver) {
         this.weaponFacade = weaponFacade;
         this.monsterFacade = monsterFacade;
+        this.roleResolver = roleResolver;
     }
 
 
@@ -56,9 +62,13 @@ public class WeaponController {
      */
     @RequestMapping(value = "/create", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public final WeaponDTO createWeapon(@RequestBody WeaponCreateDTO weaponCreateDTO){
+    public final WeaponDTO createWeapon(@RequestBody WeaponCreateDTO weaponCreateDTO, HttpServletRequest request){
 
         log.debug("Rest createWeapon ({})" , weaponCreateDTO);
+
+        if(!roleResolver.hasRole(request, UserRole.ADMIN)) {
+            throw new PrivilegeException("Not permitted.");
+        }
 
         WeaponDTO weaponDTO = weaponFacade.findByName(weaponCreateDTO.getName());
         if (weaponDTO != null){
@@ -77,9 +87,13 @@ public class WeaponController {
      * @throws ResourceNotFoundException when weapon with given ID wasn't found
      */
     @RequestMapping(value = "/delete/{id}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public final void deleteWeapon(@PathVariable("id") long id){
+    public final void deleteWeapon(@PathVariable("id") long id, HttpServletRequest request){
 
         log.debug("Rest deleteWeapon with id: {}" , id );
+
+        if(!roleResolver.hasRole(request, UserRole.ADMIN)) {
+            throw new PrivilegeException("Not permitted.");
+        }
 
         try{
             weaponFacade.deleteWeapon(id);
@@ -104,8 +118,15 @@ public class WeaponController {
      * @throws ResourceNotFoundException when weapon with given id is not found
      */
     @RequestMapping(value = "/update/{id}", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public final WeaponDTO updateWeapon(@PathVariable("id") long id, @RequestBody WeaponUpdateDTO weaponUpdateDTO){
+    public final WeaponDTO updateWeapon(@PathVariable("id") long id,
+                                        @RequestBody WeaponUpdateDTO weaponUpdateDTO,
+                                        HttpServletRequest request){
+
         log.debug("Rest updateWeapon ({})",weaponUpdateDTO);
+
+        if(!roleResolver.hasRole(request, UserRole.ADMIN)) {
+            throw new PrivilegeException("Not permitted.");
+        }
 
         if (weaponUpdateDTO == null){
             throw new InvalidParameterException("Argument is null");
