@@ -23,7 +23,7 @@ export class WeaponsComponent implements OnInit {
   }
 
   loadWeapons(){
-    this.http.get<Weapon[]>('http://localhost:8080/pa165/rest/weapons').subscribe(
+    this.http.get<Weapon[]>('http://localhost:8080/pa165/rest/auth/weapons/', {withCredentials: true}).subscribe(
       data => {
         this.weapons = data;
         this.dataSource = new MatTableDataSource(this.weapons);

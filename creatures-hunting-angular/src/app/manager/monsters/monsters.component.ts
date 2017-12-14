@@ -37,7 +37,7 @@ export class MonstersComponent implements OnInit {
   }
 
   removeMonster(id) {
-    this.http.delete('http://localhost:8080/pa165/rest/monsters/' + id,  {responseType: 'text'}).subscribe(
+    this.http.delete('http://localhost:8080/pa165/rest/monsters/' + id,  {responseType: 'text', withCredentials: true}).subscribe(
       data => {
         this.loadMonsters();
       },

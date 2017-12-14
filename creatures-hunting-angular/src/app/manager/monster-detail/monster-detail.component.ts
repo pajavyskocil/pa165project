@@ -25,7 +25,7 @@ export class MonsterDetailComponent implements OnInit {
   }
 
   loadData(){
-    this.http.get<Monster>('http://localhost:8080/pa165/rest/monsters/' + this.monsterId).subscribe(
+    this.http.get<Monster>('http://localhost:8080/pa165/rest/monsters/' + this.monsterId, {withCredentials: true}).subscribe(
       data => {
         this.monster = data;
         this.showMonster = true;
@@ -36,7 +36,7 @@ export class MonsterDetailComponent implements OnInit {
   updateMonster(name, height, weight, agility){
       var json = {"name":name, "height":height, "weight":weight, "agility":agility};
       console.log(json);
-      this.http.put('http://localhost:8080/pa165/rest/monsters/' + this.monsterId, json).subscribe(
+      this.http.put('http://localhost:8080/pa165/rest/monsters/' + this.monsterId, json, {withCredentials: true}).subscribe(
         data => {
         this.loadData();
       }, error => {

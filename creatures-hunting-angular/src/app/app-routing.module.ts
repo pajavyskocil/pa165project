@@ -7,6 +7,11 @@ import {HomeComponent} from "./manager/home/home.component";
 import {MonstersComponent} from "./manager/monsters/monsters.component";
 import {WeaponsComponent} from "./manager/weapons/weapons.component";
 import {MonsterDetailComponent} from "./manager/monster-detail/monster-detail.component";
+import {MonsterCreateComponent} from "./manager/monster-create/monster-create.component";
+import {WeaponCreateComponent} from "./manager/weapon-create/weapon-create.component";
+import {WeaponDetailComponent} from "./manager/weapon-detail/weapon-detail.component";
+import {UsersComponent} from "./manager/users/users.component";
+import {Error404Component} from "./error404/error404.component";
 
 const routes: Routes = [
   {
@@ -26,16 +31,59 @@ const routes: Routes = [
         component: MonstersComponent
       },
       {
+        path: 'monsters/:id',
+        component: MonsterDetailComponent
+      },
+      {
+        path: 'create/monster',
+        component: MonsterCreateComponent
+      },
+      {
         path: 'weapons',
         component: WeaponsComponent
       },
       {
-        path: 'monsters/:id',
-        component: MonsterDetailComponent
+        path: 'weapons/:id',
+        component: WeaponDetailComponent
+      },
+      {
+        path: 'create/weapon',
+        component: WeaponCreateComponent
+      },
+      {
+        path: 'users',
+        component: UsersComponent
+      },
+      {
+        path: 'create/user',
+        //component: UserCreateComponent
+        component:Error404Component
+      },
+      {
+        path: 'areas',
+        //component: AreasComponent
+        component:Error404Component
+
+      },
+      {
+        path: 'areas/:id',
+        //component: AreasDetailComponent
+        component:Error404Component
+
+      },
+      {
+        path: 'areas/new',
+        //component: AreasCreateComponent
+        component:Error404Component
       }
     ]
+  },
+  {
+    path:'**',
+    component: Error404Component
   }
 ];
+
 
 @NgModule({
   imports: [

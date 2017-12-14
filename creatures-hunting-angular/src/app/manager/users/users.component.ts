@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import {User} from "../entity.module";
 import {MatTableDataSource} from "@angular/material";
 import { HttpClient } from '@angular/common/http';
+import {User} from "../../entity.module";
 
 @Component({
 	selector: 'app-users',

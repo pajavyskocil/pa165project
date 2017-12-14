@@ -17,7 +17,7 @@ export class MonsterCreateComponent implements OnInit {
   createMonster(name, height, weight, agility){
     var json = {"name":name, "height":height, "weight":weight, "agility":agility};
     console.log(json);
-    this.http.post('http://localhost:8080/pa165/rest/monsters/create', json).subscribe(
+    this.http.post('http://localhost:8080/pa165/rest/auth/monsters/create', json, {withCredentials: true}).subscribe(
       data => {
         this.router.navigate(['monsters']);
       }, error => {
