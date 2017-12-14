@@ -19,6 +19,10 @@ import {UsersComponent} from "./manager/users/users.component";
 import {WeaponCreateComponent} from "./manager/weapon-create/weapon-create.component";
 import {MonsterCreateComponent} from "./manager/monster-create/monster-create.component";
 import {Error404Component} from "./error404/error404.component";
+import {UserCreateComponent} from "./manager/user-create/user-create.component";
+import {AreaCreateComponent} from "./manager/area-create/area-create.component";
+import {AreaDetailComponent} from "./manager/area-detail/area-detail.component";
+import {AreasComponent} from "./manager/areas/areas.component";
 
 
 @NgModule({
@@ -28,14 +32,14 @@ import {Error404Component} from "./error404/error404.component";
     MonstersComponent,
     WeaponsComponent,
     UsersComponent,
-    //AreasComponent,
+    AreasComponent,
     MonsterDetailComponent,
     WeaponDetailComponent,
-    //AreaDetailComponent,
+    AreaDetailComponent,
     WeaponCreateComponent,
     MonsterCreateComponent,
-    //AreaCreateComponent,
-    //UserCreateComponent,
+    AreaCreateComponent,
+    UserCreateComponent,
     LoginComponent,
     ManagerComponent,
     Error404Component

@@ -12,6 +12,10 @@ import {WeaponCreateComponent} from "./manager/weapon-create/weapon-create.compo
 import {WeaponDetailComponent} from "./manager/weapon-detail/weapon-detail.component";
 import {UsersComponent} from "./manager/users/users.component";
 import {Error404Component} from "./error404/error404.component";
+import {UserCreateComponent} from "./manager/user-create/user-create.component";
+import {AreasComponent} from "./manager/areas/areas.component";
+import {AreaDetailComponent} from "./manager/area-detail/area-detail.component";
+import {AreaCreateComponent} from "./manager/area-create/area-create.component";
 
 const routes: Routes = [
   {
@@ -56,25 +60,19 @@ const routes: Routes = [
       },
       {
         path: 'create/user',
-        //component: UserCreateComponent
-        component:Error404Component
+        component: UserCreateComponent
       },
       {
         path: 'areas',
-        //component: AreasComponent
-        component:Error404Component
-
+        component: AreasComponent
       },
       {
         path: 'areas/:id',
-        //component: AreasDetailComponent
-        component:Error404Component
-
+        component: AreaDetailComponent
       },
       {
         path: 'areas/new',
-        //component: AreasCreateComponent
-        component:Error404Component
+        component: AreaCreateComponent
       }
     ]
   },
