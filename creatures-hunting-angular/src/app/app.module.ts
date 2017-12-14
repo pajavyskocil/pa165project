@@ -12,10 +12,17 @@ import { MonsterDetailComponent } from './manager/monster-detail/monster-detail.
 import { WeaponsComponent} from './manager/weapons/weapons.component';
 
 import { HttpClientModule } from '@angular/common/http';
-import {WeaponDetailComponent} from "./manager/weapon-detail/weapon-detail.component";
-import { TestComponent } from './test/test.component';
 import { LoginComponent } from './login/login.component';
 import { ManagerComponent } from './manager/manager.component';
+import {WeaponDetailComponent} from "./manager/weapon-detail/weapon-detail.component";
+import {UsersComponent} from "./manager/users/users.component";
+import {WeaponCreateComponent} from "./manager/weapon-create/weapon-create.component";
+import {MonsterCreateComponent} from "./manager/monster-create/monster-create.component";
+import {Error404Component} from "./error404/error404.component";
+import {UserCreateComponent} from "./manager/user-create/user-create.component";
+import {AreaCreateComponent} from "./manager/area-create/area-create.component";
+import {AreaDetailComponent} from "./manager/area-detail/area-detail.component";
+import {AreasComponent} from "./manager/areas/areas.component";
 
 
 @NgModule({
@@ -24,11 +31,18 @@ import { ManagerComponent } from './manager/manager.component';
     HomeComponent,
     MonstersComponent,
     WeaponsComponent,
+    UsersComponent,
+    AreasComponent,
     MonsterDetailComponent,
     WeaponDetailComponent,
-    TestComponent,
+    AreaDetailComponent,
+    WeaponCreateComponent,
+    MonsterCreateComponent,
+    AreaCreateComponent,
+    UserCreateComponent,
     LoginComponent,
-    ManagerComponent
+    ManagerComponent,
+    Error404Component
   ],
   imports: [
     BrowserModule,

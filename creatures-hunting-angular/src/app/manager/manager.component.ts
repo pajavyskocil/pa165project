@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {HttpClient} from "@angular/common/http";
 
 @Component({
   selector: 'app-manager',
@@ -7,9 +8,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ManagerComponent implements OnInit {
 
-  constructor() { }
+  constructor(private http: HttpClient) { }
 
   ngOnInit() {
   }
 
+  logout() {
+    this.http.delete('http://localhost:8080/pa165/rest/auth', {withCredentials: true}).subscribe(
+      data => console.log('Data: ' + data),
+      error => console.log('Error: ' + error)
+    )
+  }
 }

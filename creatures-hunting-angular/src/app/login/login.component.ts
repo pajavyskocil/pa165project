@@ -22,7 +22,7 @@ export class LoginComponent implements OnInit {
     this.http.post('http://localhost:8080/pa165/rest/auth?email=' + email + '&password=' + password, null, { withCredentials: true }).subscribe(
       data=> {
         console.log('Data: ' + data);
-        this.router.navigate(['auth/home']);
+        this.router.navigate(['']);
       },
       error => {
         console.log('Error: ' + error);
@@ -31,11 +31,6 @@ export class LoginComponent implements OnInit {
     )
   }
 
-  logout() {
-    this.http.delete('http://localhost:8080/pa165/rest/auth', {withCredentials: true}).subscribe(
-      data => console.log('Data: ' + data),
-      error => console.log('Error: ' + error)
-    )
-  }
+
 
 }
