@@ -17,6 +17,8 @@ import cz.fi.muni.pa165.dto.UserDTO;
 import cz.fi.muni.pa165.facade.UserFacade;
 import cz.fi.muni.pa165.rest.SecurityUtils;
 import cz.fi.muni.pa165.rest.exceptions.NotAuthorizedException;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpRequest;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
 /**
@@ -34,6 +36,11 @@ public class SecurityFilter implements Filter {
 	public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
 		HttpServletRequest request = (HttpServletRequest) servletRequest;
 		HttpServletResponse response = (HttpServletResponse) servletResponse;
+
+		if (request.getMethod().equals("OPTIONS")) {
+			filterChain.doFilter(request, response);
+			return;
+		}
 
 		Cookie[] cookies = request.getCookies();
 
