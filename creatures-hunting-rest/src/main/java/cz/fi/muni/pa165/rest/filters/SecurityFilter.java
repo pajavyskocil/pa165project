@@ -23,7 +23,7 @@ import org.springframework.web.context.support.WebApplicationContextUtils;
 /**
  * @author Vojtech Sassmann &lt;vojtech.sassmann@gmail.com&gt;
  */
-@WebFilter(urlPatterns = {"/auth/monsters/*", "/auth/areas/*", "/auth/weapons/*"})
+@WebFilter(urlPatterns = {"/auth/monsters/*", "/auth/areas/*", "/auth/weapons/*", "/auth/users/*"})
 public class SecurityFilter implements Filter {
 
 	@Override
